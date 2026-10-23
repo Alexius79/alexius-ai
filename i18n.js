@@ -11,7 +11,7 @@ window.I18N = {
       { ic: 'web', t: 'Webseiten programmieren', d: 'Von schnellen Prototypen bis zur fertigen Webseite. Auch diese Seite – alexius.ai – ist mit Hilfe von Claude Code programmiert.', tags: ['Prototypen', 'Webseiten', 'Claude Code'] },
       { ic: 'chat', t: 'Claude & ChatGPT clever nutzen', d: 'Intelligente Nutzung von Claude und ChatGPT: recherchieren, schreiben, strukturieren – und die Ergebnisse der einen KI mit der anderen gegenprüfen.', tags: ['Claude', 'ChatGPT'] },
       { ic: 'code', t: 'Claude Coding', d: 'Programmierung von Apps, Webseiten, Dashboards und allem Nützlichen, das den Alltag leichter macht.', tags: ['Apps', 'Dashboards', 'Tools'] },
-      { ic: 'media', t: 'KI-Content', d: 'Bilder, Videos, Stimmen und Musik mit den aktuellen KI-Tools generieren.', tags: ['Kling', 'Nano Banana', 'Midjourney'] },
+      { ic: 'media', t: 'KI-Content', d: 'Bilder, Videos, Stimmen und Musik mit den aktuellen KI-Tools generieren.', tags: ['Kling', 'Nano Banana', 'Midjourney', 'Suno'] },
       { ic: 'route', t: 'OnLogist-Tool', d: 'Eine nützliche Web-App zur schnellen Kalkulation logistischer Wege.', tags: ['Web-App', 'Logistik'] },
       { ic: 'plus', t: 'Was als Nächstes kommt', d: 'Neue Ideen sind schon in Arbeit – jedes neue KI-Projekt bekommt hier seine eigene Karte.', tags: ['In Arbeit'] },
     ],
@@ -52,6 +52,14 @@ window.I18N = {
       again: '↺ Replay', back: '← Back', menu: 'Topics', kiSoon: 'AI section coming soon in English',
     },
     topics: { sprachen: 'Languages', projekte: 'Projects', skills: 'Skills', lebenslauf: 'Career', ausbildung: 'Education', ki: 'AI' },
+    ai: [
+      { ic: 'web', t: 'Building websites', d: 'From quick prototypes to finished websites. This very site – alexius.ai – was also built with the help of Claude Code.', tags: ['Prototypes', 'Websites', 'Claude Code'] },
+      { ic: 'chat', t: 'Using Claude & ChatGPT smartly', d: 'Smart use of Claude and ChatGPT: research, write, structure – and cross-check the results of one AI with the other.', tags: ['Claude', 'ChatGPT'] },
+      { ic: 'code', t: 'Claude Coding', d: 'Building apps, websites, dashboards and all kinds of useful tools that make everyday life easier.', tags: ['Apps', 'Dashboards', 'Tools'] },
+      { ic: 'media', t: 'AI content', d: 'Generating images, videos, voices and music with the latest AI tools.', tags: ['Kling', 'Nano Banana', 'Midjourney', 'Suno'] },
+      { ic: 'route', t: 'OnLogist tool', d: 'A handy web app for quickly calculating logistics routes.', tags: ['Web app', 'Logistics'] },
+      { ic: 'plus', t: 'What comes next', d: 'New ideas are already in the works – every new AI project gets its own card here.', tags: ['In progress'] },
+    ],
     langs: [['German', 'native'], ['English', 'fluent'], ['Russian', 'fluent']],
     projects: [
       { y: '2004–10', t: 'International logistics projects', k: 'Volkswagen Original Parts', d: 'Coordinated international logistics projects in the original parts and aftersales business – processes, interfaces, supplier communication.' },
@@ -89,6 +97,14 @@ window.I18N = {
       again: '↺ Ещё раз', back: '← Назад', menu: 'Темы', kiSoon: 'Раздел ИИ скоро появится на русском',
     },
     topics: { sprachen: 'Языки', projekte: 'Проекты', skills: 'Навыки', lebenslauf: 'Карьера', ausbildung: 'Образование', ki: 'ИИ' },
+    ai: [
+      { ic: 'web', t: 'Создание сайтов', d: 'От быстрых прототипов до готовых сайтов. Этот сайт – alexius.ai – тоже создан с помощью Claude Code.', tags: ['Прототипы', 'Сайты', 'Claude Code'] },
+      { ic: 'chat', t: 'Claude и ChatGPT с умом', d: 'Грамотная работа с Claude и ChatGPT: искать, писать, структурировать – и перепроверять результаты одного ИИ с помощью другого.', tags: ['Claude', 'ChatGPT'] },
+      { ic: 'code', t: 'Claude Coding', d: 'Разработка приложений, сайтов, дашбордов и полезных инструментов, которые упрощают жизнь.', tags: ['Приложения', 'Дашборды', 'Инструменты'] },
+      { ic: 'media', t: 'ИИ-контент', d: 'Создание изображений, видео, голосов и музыки с помощью современных ИИ-инструментов.', tags: ['Kling', 'Nano Banana', 'Midjourney', 'Suno'] },
+      { ic: 'route', t: 'Инструмент OnLogist', d: 'Удобное веб-приложение для быстрого расчёта логистических маршрутов.', tags: ['Веб-приложение', 'Логистика'] },
+      { ic: 'plus', t: 'Что дальше', d: 'Новые идеи уже в работе – каждый новый ИИ-проект получит здесь свою карточку.', tags: ['В работе'] },
+    ],
     langs: [['Немецкий', 'родной'], ['Английский', 'свободно'], ['Русский', 'свободно']],
     projects: [
       { y: '2004–10', t: 'Международные логистические проекты', k: 'Volkswagen Original Teile', d: 'Координация международных логистических проектов в сфере оригинальных запчастей и послепродажного обслуживания – процессы, интерфейсы, коммуникация с поставщиками.' },

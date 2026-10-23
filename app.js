@@ -106,9 +106,9 @@
   function drawMesh() {
     if (!MESH || meshA < .01) return;
     const el = (performance.now() - scanT0) / 1000, first = 2.4;
-    // first pass sweeps head to toe; afterwards a calm scan repeats
-    const scanY = el < first ? 150 + (FH - 150) * ease(el / first) : 150 + (FH - 150) * (((el - first) / 5) % 1);
-    const strong = el < first ? 1 : .45, wob = reduce ? 0 : el;
+    // one single sweep head to toe; afterwards the net just stays
+    const scanY = el < first ? 150 + (FH - 150) * ease(el / first) : FH + 200;
+    const strong = el < first ? 1 : 0, wob = reduce ? 0 : el;
     const { g, cols, rows } = MESH, P = n => [fx(n.x + Math.sin(n.y * .013 + wob * 1.3) * 2.5), fy(n.y - n.l * 16 + Math.sin(n.x * .018 + wob) * 2)];
     x.save(); x.globalCompositeOperation = 'lighter'; x.lineWidth = 1 / cam.z * (W < 600 ? .8 : 1);
     for (const band of [0, 1]) {
@@ -124,6 +124,7 @@
       }
       x.stroke();
     }
+    if (!strong) { x.restore(); return; }
     // glowing nodes right under the scan line
     x.fillStyle = `rgba(220,255,255,${.9 * meshA * strong})`;
     for (const n of g) { if (!n) continue; const dy = scanY - n.y; if (dy >= 0 && dy < 26) { const a = P(n); x.fillRect(a[0] - 1.2, a[1] - 1.2, 2.4, 2.4); } }
@@ -286,8 +287,8 @@
   }
   function placeMenu() {
     const m = $('menu').style;
-    if (W >= 760) { m.left = Math.min(W - 200, fx(880) + 20) + 'px'; m.right = 'auto'; m.top = fy(560) + 'px'; }
-    else { m.left = 'auto'; m.right = '12px'; m.top = Math.round(H * .34) + 'px'; }
+    if (W >= 760) { m.left = Math.min(W - 200, fx(880) + 20) + 'px'; m.right = 'auto'; m.top = Math.max(80, fy(560) - H * .1) + 'px'; }
+    else { m.left = 'auto'; m.right = '12px'; m.top = Math.round(H * .24) + 'px'; }
   }
   function go() {
     if (state !== 'form' || !ready) return;
@@ -309,7 +310,6 @@
 
   function openTopic(name) {
     if (state !== 'done') return;
-    if (name === 'ki' && lang !== 'de') { toast(L().ui.kiSoon); return; }
     const el = $('topic-' + name);
     if (!el) return;
     state = 'topic'; clearTimers();
