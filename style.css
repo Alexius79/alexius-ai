@@ -37,14 +37,31 @@ main.away{opacity:0!important;transition-delay:0s}
 .topic{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:90px 22px max(26px,env(safe-area-inset-bottom));text-align:center;pointer-events:none;opacity:0;transition:opacity .6s;
   background:linear-gradient(to bottom,rgba(3,6,10,0),rgba(3,6,10,.7) 35%,rgba(3,6,10,.9))}
 .topic.on{opacity:1;pointer-events:auto}
-.langs{width:min(360px,86vw);height:auto;display:block;margin:6px auto 0;overflow:visible}
-.langs text{font-family:Caveat,"Segoe Script","Bradley Hand",cursive;font-size:64px;font-weight:600;text-anchor:middle;fill:rgba(234,252,255,0);stroke:#5ef0ff;stroke-width:1.2;stroke-dasharray:900;stroke-dashoffset:900;filter:drop-shadow(0 0 6px rgba(94,240,255,.55))}
-.topic.on .langs text{animation:write 1.7s ease forwards,fillin .8s ease forwards}
-.topic.on .langs text:nth-child(1){animation-delay:.5s,1.8s}
-.topic.on .langs text:nth-child(2){animation-delay:1.3s,2.6s}
-.topic.on .langs text:nth-child(3){animation-delay:2.1s,3.4s}
-@keyframes write{to{stroke-dashoffset:0}}
-@keyframes fillin{to{fill:rgba(234,252,255,.95)}}
-.back{margin-top:14px;background:rgba(3,6,10,.5);border:1px solid rgba(94,240,255,.35);color:var(--ink);border-radius:30px;padding:8px 14px;font-size:9.5px;cursor:pointer}
+/* typewriter languages */
+.type{list-style:none;margin:10px auto 0;display:inline-flex;flex-direction:column;gap:14px;text-align:left;min-width:220px}
+.type li{font-size:clamp(22px,6.4vw,34px);letter-spacing:.18em;color:var(--ink);text-shadow:0 0 14px rgba(94,240,255,.45);min-height:1.2em;display:flex;align-items:center;gap:.6em}
+.type li::before{content:attr(data-n);font-size:.38em;color:var(--cy);letter-spacing:.1em;opacity:.8}
+.type li.cur::after{content:"";width:.55em;height:1em;background:var(--cy);margin-left:.08em;animation:caret .8s steps(1) infinite;box-shadow:0 0 10px var(--cy)}
+@keyframes caret{50%{opacity:0}}
+
+/* eye / projects */
+#eye{position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;opacity:0;transition:opacity 1s ease}
+#eye.on{opacity:1}
+.topic-eye{background:linear-gradient(to bottom,rgba(3,6,10,0),rgba(3,6,10,.55) 30%,rgba(3,6,10,.85))}
+.timeline{list-style:none;position:relative;margin:8px auto 0;padding-left:26px;max-width:340px;text-align:left}
+.timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:1px;background:linear-gradient(var(--cy),rgba(94,240,255,.15))}
+.timeline li{position:relative;opacity:0;transform:translateX(-8px);transition:opacity .5s,transform .5s}
+.timeline li.in{opacity:1;transform:none}
+.timeline button{all:unset;cursor:pointer;display:flex;gap:12px;align-items:baseline;padding:9px 0;width:100%}
+.timeline button::before{content:"";position:absolute;left:-22px;top:15px;width:9px;height:9px;border-radius:50%;background:#03060a;border:1.5px solid var(--cy);box-shadow:0 0 10px rgba(94,240,255,.6)}
+.timeline button[aria-expanded=true]::before{background:var(--cy)}
+.timeline .yr{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;color:var(--cy);letter-spacing:.12em;min-width:42px}
+.timeline .ti{font-size:16px;font-weight:700;color:var(--ink)}
+.timeline button:focus-visible .ti{text-decoration:underline}
+.pcard{max-width:340px;margin:12px auto 0;text-align:left;padding:14px 16px;border-radius:16px;background:rgba(6,24,34,.7);border:1px solid rgba(94,240,255,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.pcard .pk{font-size:9.5px;color:var(--cy)}
+.pcard h3{font-size:17px;margin-top:6px}
+.pcard p{font-size:13px;line-height:1.45;color:#cfe6ee;margin-top:6px}
+.back{display:block;margin:16px auto 0;background:rgba(3,6,10,.5);border:1px solid rgba(94,240,255,.35);color:var(--ink);border-radius:30px;padding:8px 14px;font-size:9.5px;cursor:pointer}
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-8px);z-index:9;font-size:10px;padding:8px 14px;border-radius:20px;background:rgba(5,22,32,.85);border:1px solid rgba(94,240,255,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
 .toast.on{opacity:1;transform:translate(-50%,0)}

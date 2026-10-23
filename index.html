@@ -9,22 +9,22 @@
 <meta property="og:title" content="alexius.ai – Alexander Hirsekorn">
 <meta property="og:description" content="Ingenieur · Macher · AI-Builder.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2303060a'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='28' fill='%235ef0ff' text-anchor='middle'%3EAH%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet">
-<link rel="preload" href="side.webp" as="image"><link rel="preload" href="front.webp" as="image">
-<link rel="stylesheet" href="style.css">
+<link rel="preload" href="side2.webp" as="image"><link rel="preload" href="front2.webp" as="image">
+<link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
 <canvas id="c" aria-label="Alexander Hirsekorn als Hologramm mit dem Schriftzug alexius.ai"></canvas>
+<canvas id="eye" aria-hidden="true"></canvas>
 <div class="scan"></div><div class="vig"></div>
 <header><div class="logo">AH<span>.</span></div><div class="pill mono"><i></i><span id="st">Hologramm bereit</span></div></header>
 <div class="hint mono" id="hint">Tippe auf alexius.ai</div>
 
 <nav id="menu" aria-label="Themen">
   <button class="mbtn mono" data-topic="sprachen"><b>01</b>Sprachen</button>
-  <button class="mbtn mono" data-topic="skills"><b>02</b>Skills</button>
-  <button class="mbtn mono" data-topic="projekte"><b>03</b>Projekte</button>
+  <button class="mbtn mono" data-topic="projekte"><b>02</b>Projekte</button>
+  <button class="mbtn mono" data-topic="skills"><b>03</b>Skills</button>
   <button class="mbtn mono" data-topic="ausbildung"><b>04</b>Ausbildung</button>
+  <button class="mbtn mono" data-topic="lebenslauf"><b>05</b>Lebenslauf</button>
 </nav>
 
 <main id="main">
@@ -37,15 +37,22 @@
 
 <section id="topic-sprachen" class="topic" aria-hidden="true">
   <div class="kicker mono">// Sprachen</div>
-  <svg class="langs" viewBox="0 0 360 230" aria-label="Deutsch, Russisch, Englisch">
-    <text x="180" y="62">Deutsch</text>
-    <text x="180" y="138">Russisch</text>
-    <text x="180" y="214">Englisch</text>
-  </svg>
+  <ul class="type mono" aria-label="Deutsch, Englisch, Russisch">
+    <li data-text="Deutsch"></li>
+    <li data-text="Englisch"></li>
+    <li data-text="Russisch"></li>
+  </ul>
+  <button class="back mono" type="button">← Zurück</button>
+</section>
+
+<section id="topic-projekte" class="topic topic-eye" aria-hidden="true">
+  <div class="kicker mono">// Projekte</div>
+  <ol class="timeline" id="timeline"></ol>
+  <div class="pcard" id="pcard" hidden><div class="mono pk" id="pk"></div><h3 id="pt"></h3><p id="pd"></p></div>
   <button class="back mono" type="button">← Zurück</button>
 </section>
 
 <div class="toast mono" id="toast">Kommt bald</div>
-<script src="app.js"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

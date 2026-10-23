@@ -3,7 +3,13 @@
   const FW = 1023, FH = 1537, BODY_X = 500;
   const SIDE = { x: 0, y: 0, s: 0.8, w: 1084, h: 1451 };   // placement of the side photo, set in layout()
   const FRONT = { x: 0, y: 0, s: 1 };
-  const CHEST = { x: 500, y: 760 }, MOUTH = { x: 525, y: 548 };
+  const CHEST = { x: 500, y: 760 }, FACE = { x: 528, y: 470 }, EYE = { x: 481, y: 386 };
+
+  // Projects (timeline inside the eye). Descriptions: to be filled from the CV.
+  const PROJECTS = [
+    { y: '2014', t: 'Olympische Spiele', d: 'Projektbeschreibung folgt – Rolle, Aufgabe und Ergebnis aus dem Lebenslauf.' },
+    { y: '2017', t: 'EXPO 2017', d: 'Projektbeschreibung folgt – Rolle, Aufgabe und Ergebnis aus dem Lebenslauf.' },
+  ];
 
   const c = document.getElementById('c'), x = c.getContext('2d');
   const $ = id => document.getElementById(id);
@@ -31,7 +37,7 @@
     SIDE.s = W < 600 ? .82 : .78;
     SIDE.x = 560 - 450 * SIDE.s;
     SIDE.y = ((H * .31 - oy) / s) - 560 * SIDE.s;
-    textY = H * .5;
+    textY = H * .65;
     camRest(true);
     buildText();
     placeMenu();
@@ -221,20 +227,117 @@
   }
   function toast(msg) { const tt = $('toast'); tt.textContent = msg; tt.classList.add('on'); clearTimeout(tt._t); tt._t = setTimeout(() => tt.classList.remove('on'), 1600); }
 
+  // ---- topics ----
+  let timers = [];
+  const later = (fn, ms) => timers.push(setTimeout(fn, reduce ? 0 : ms));
+  function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
   function openTopic(name) {
     if (state !== 'done') return;
-    if (name !== 'sprachen') { toast(`${name[0].toUpperCase() + name.slice(1)} – kommt bald`); return; }
-    state = 'topic';
+    if (name !== 'sprachen' && name !== 'projekte') { toast(`${name[0].toUpperCase() + name.slice(1)} – kommt bald`); return; }
+    state = 'topic'; clearTimers();
     $('main').classList.add('away'); $('menu').classList.add('hide');
-    $('st').textContent = 'Sprachen';
-    // fly the camera to the mouth
-    Object.assign(camT, { z: W < 600 ? 1.95 : 2.0, px: fx(MOUTH.x), py: fy(MOUTH.y), ax: W / 2, ay: H * (W < 600 ? .36 : .3) });
-    const el = $('topic-sprachen');
-    el.classList.remove('on'); void el.offsetWidth;
-    setTimeout(() => { if (state === 'topic') { el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); } }, reduce ? 0 : 700);
+    const el = $('topic-' + name);
+    if (name === 'sprachen') {
+      $('st').textContent = 'Sprachen';
+      // camera moves towards the face
+      Object.assign(camT, { z: W < 600 ? 2.5 : 2.4, px: fx(FACE.x), py: fy(FACE.y), ax: W / 2, ay: H * .3 });
+      later(() => { show(el); typeLangs(); }, 800);
+    } else {
+      $('st').textContent = 'Projekte';
+      // camera dives into the eye, then the eye scene takes over
+      Object.assign(camT, { z: 7, px: fx(EYE.x), py: fy(EYE.y), ax: W / 2, ay: H * .3 });
+      later(() => { eyeOn(true); }, 650);
+      later(() => { show(el); buildTimeline(); }, 1500);
+    }
   }
+  function show(el) { el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); }
   function closeTopics() {
+    clearTimers(); eyeOn(false);
     document.querySelectorAll('.topic').forEach(el => { el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); });
+    $('pcard').hidden = true;
+  }
+
+  // typewriter
+  function typeLangs() {
+    const items = [...document.querySelectorAll('#topic-sprachen .type li')];
+    items.forEach((li, i) => { li.textContent = ''; li.dataset.n = '0' + (i + 1); li.classList.remove('cur'); });
+    let i = 0;
+    const next = () => {
+      if (i >= items.length || state !== 'topic') return;
+      const li = items[i], txt = li.dataset.text; let k = 0;
+      li.classList.add('cur');
+      const tick = () => {
+        if (state !== 'topic') return;
+        li.textContent = txt.slice(0, ++k);
+        if (k < txt.length) later(tick, 70 + R() * 70);
+        else later(() => { li.classList.remove('cur'); i++; next(); }, 350);
+      };
+      later(tick, 200);
+    };
+    next();
+  }
+
+  // project timeline
+  function buildTimeline() {
+    const ol = $('timeline'); ol.innerHTML = '';
+    PROJECTS.forEach((p, i) => {
+      const li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('aria-expanded', 'false');
+      b.innerHTML = `<span class="yr">${p.y}</span><span class="ti">${p.t}</span>`;
+      b.addEventListener('click', () => {
+        const open = b.getAttribute('aria-expanded') === 'true';
+        ol.querySelectorAll('button').forEach(o => o.setAttribute('aria-expanded', 'false'));
+        const card = $('pcard');
+        if (open) { card.hidden = true; return; }
+        b.setAttribute('aria-expanded', 'true');
+        $('pk').textContent = p.y; $('pt').textContent = p.t; $('pd').textContent = p.d; card.hidden = false;
+      });
+      li.appendChild(b); ol.appendChild(li);
+      later(() => li.classList.add('in'), 150 + i * 220);
+    });
+  }
+
+  // eye scene (separate canvas): iris, pupil, fibres
+  const ec = $('eye'), ex = ec.getContext('2d');
+  let eyeActive = false, eyeT0 = 0, eyeRaf = 0, fibres = [];
+  function eyeOn(on) {
+    if (on === eyeActive) return;
+    eyeActive = on; ec.classList.toggle('on', on);
+    if (on) {
+      ec.width = W * D; ec.height = H * D; ex.setTransform(D, 0, 0, D, 0, 0);
+      fibres = Array.from({ length: W < 600 ? 900 : 1500 }, () => ({ a: R() * Math.PI * 2, r0: .26 + R() * .06, r1: .55 + R() * .45, w: R() * 1.2 + .2, c: R(), sp: (R() - .5) * .0006 }));
+      eyeT0 = performance.now(); cancelAnimationFrame(eyeRaf); eyeLoop();
+    } else setTimeout(() => { if (!eyeActive) cancelAnimationFrame(eyeRaf); }, 1100);
+  }
+  function eyeLoop() {
+    const tt = (performance.now() - eyeT0) / 1000, cx = W / 2, cy = H * .3, Rr = Math.min(W, H) * (W < 600 ? .62 : .42);
+    ex.fillStyle = '#02050a'; ex.fillRect(0, 0, W, H);
+    const open = ease(clamp(tt / 1.2)), z = .85 + .15 * open;
+    const g = ex.createRadialGradient(cx, cy, Rr * .2, cx, cy, Rr * 1.1);
+    g.addColorStop(0, 'rgba(40,140,190,.35)'); g.addColorStop(.6, 'rgba(20,70,110,.25)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ex.fillStyle = g; ex.fillRect(0, 0, W, H);
+    ex.globalCompositeOperation = 'lighter';
+    for (const f of fibres) {
+      const a = f.a + tt * f.sp * 60, r0 = f.r0 * Rr * z, r1 = f.r1 * Rr * z;
+      ex.strokeStyle = f.c < .7 ? `rgba(94,200,255,${.08 + f.c * .22})` : `rgba(200,240,255,${.12 + (f.c - .7) * .5})`;
+      ex.lineWidth = f.w; ex.beginPath();
+      ex.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+      ex.lineTo(cx + Math.cos(a + .02) * r1, cy + Math.sin(a + .02) * r1); ex.stroke();
+    }
+    ex.globalCompositeOperation = 'source-over';
+    const pr = Rr * .27 * z * (1 + .03 * Math.sin(tt * 1.4));
+    const pg = ex.createRadialGradient(cx, cy, 0, cx, cy, pr * 1.15);
+    pg.addColorStop(0, '#000'); pg.addColorStop(.8, 'rgba(0,6,12,.96)'); pg.addColorStop(1, 'rgba(0,0,0,0)');
+    ex.fillStyle = pg; ex.beginPath(); ex.arc(cx, cy, pr * 1.15, 0, 7); ex.fill();
+    // highlight + thin rings
+    ex.fillStyle = 'rgba(230,250,255,.55)'; ex.beginPath(); ex.ellipse(cx - pr * .45, cy - pr * .5, pr * .16, pr * .1, -.5, 0, 7); ex.fill();
+    ex.strokeStyle = 'rgba(94,240,255,.35)'; ex.lineWidth = 1;
+    ex.beginPath(); ex.arc(cx, cy, Rr * 1.02 * z, tt * .2, tt * .2 + 4.2); ex.stroke();
+    ex.beginPath(); ex.arc(cx, cy, Rr * 1.1 * z, -tt * .15, -tt * .15 + 2.2); ex.stroke();
+    const v = ex.createRadialGradient(cx, cy, Rr * .9, cx, cy, Math.max(W, H));
+    v.addColorStop(0, 'rgba(2,5,10,0)'); v.addColorStop(1, 'rgba(2,5,10,1)'); ex.fillStyle = v; ex.fillRect(0, 0, W, H);
+    eyeRaf = requestAnimationFrame(eyeLoop);
   }
   function back() {
     closeTopics(); camRest(); state = 'done';
@@ -249,10 +352,18 @@
   addEventListener('pointermove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
   addEventListener('pointerleave', () => { mouse.x = mouse.y = -1e4; });
   addEventListener('touchend', () => { mouse.x = mouse.y = -1e4; });
-  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); if (ready) buildParticles(); if (state === 'topic') back(); }, 150); });
+  // ignore small height-only changes (mobile browser toolbars)
+  let rz; addEventListener('resize', () => {
+    clearTimeout(rz);
+    rz = setTimeout(() => {
+      if (Math.abs(innerWidth - W) < 2 && Math.abs(innerHeight - H) < 140) return;
+      if (state === 'topic') { closeTopics(); state = 'done'; showMain(); }
+      layout(); if (ready) buildParticles();
+    }, 150);
+  });
 
   const onload = () => { if (++loaded === 2) { buildParticles(); ready = true; } };
   imgSide.onload = imgFront.onload = onload;
-  imgSide.src = 'side.webp'; imgFront.src = 'front.webp';
+  imgSide.src = 'side2.webp'; imgFront.src = 'front2.webp';
   layout(); frame();
 })();
