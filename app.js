@@ -34,9 +34,11 @@
 
   const fx = px => ox + px * s, fy = py => oy + py * s;
 
+  // pin a canvas to its pixel size so the browser never stretches it when the viewport changes
+  const fit = cv => { cv.style.width = W + 'px'; cv.style.height = H + 'px'; };
   function layout() {
     D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight;
-    c.width = W * D; c.height = H * D;
+    c.width = W * D; c.height = H * D; fit(c);
     s = Math.min(H * .92 / FH, W * 1.55 / FW);
     ox = W / 2 - BODY_X * s; oy = H - FH * s;
     // side photo: large, face in the upper third, slightly right of centre (he looks to the left)
@@ -440,7 +442,7 @@
     if (on === globeActive) return;
     globeActive = on; gc.classList.toggle('on', on);
     if (on) {
-      gc.width = W * D; gc.height = H * D; gx.setTransform(D, 0, 0, D, 0, 0);
+      gc.width = W * D; gc.height = H * D; fit(gc); gx.setTransform(D, 0, 0, D, 0, 0);
       rot = { lon: 20, lat: 25 }; gT0 = performance.now(); cancelAnimationFrame(globeRaf); globeLoop();
     } else { clearInterval(auto); setTimeout(() => { if (!globeActive) cancelAnimationFrame(globeRaf); }, 1100); }
   }
@@ -601,7 +603,7 @@
     if (on === eyeActive) return;
     eyeActive = on; ec.classList.toggle('on', on);
     if (on) {
-      ec.width = W * D; ec.height = H * D; ex.setTransform(D, 0, 0, D, 0, 0);
+      ec.width = W * D; ec.height = H * D; fit(ec); ex.setTransform(D, 0, 0, D, 0, 0);
       fibres = Array.from({ length: W < 600 ? 900 : 1500 }, () => ({ a: R() * Math.PI * 2, r0: .26 + R() * .06, r1: .55 + R() * .45, w: R() * 1.2 + .2, c: R(), sp: (R() - .5) * .0006 }));
       eyeT0 = performance.now(); cancelAnimationFrame(eyeRaf); eyeLoop();
     } else setTimeout(() => { if (!eyeActive) cancelAnimationFrame(eyeRaf); }, 1100);
@@ -679,7 +681,9 @@
   let rz; addEventListener('resize', () => {
     clearTimeout(rz);
     rz = setTimeout(() => {
-      if (Math.abs(innerWidth - W) < 2 && Math.abs(innerHeight - H) < 140) return;
+      // small height-only changes (toolbars, a translate bar): re-fit quietly unless a topic is open
+      if (Math.abs(innerWidth - W) < 2 && Math.abs(innerHeight - H) < 2) return;
+      if (Math.abs(innerWidth - W) < 2 && Math.abs(innerHeight - H) < 140 && state === 'topic') return;
       if (state === 'topic') { closeTopics(); state = 'done'; showMain(); }
       layout(); if (ready) buildParticles();
     }, 150);
