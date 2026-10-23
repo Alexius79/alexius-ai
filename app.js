@@ -4,7 +4,7 @@
   const SIDE = { x: 0, y: 0, s: 0.8, w: 1084, h: 1451 };   // placement of the side photo, set in layout()
   const FRONT = { x: 0, y: 0, s: 1 };
   const CHEST = { x: 500, y: 760 }, FACE = { x: 528, y: 470 }, EYE = { x: 481, y: 386 };
-  const ARM = { x: 330, y: 1010 }, BROW = { x: 528, y: 330 };
+  const ARM = { x: 330, y: 1010 }, WATCH = { x: 355, y: 1047, r: 27 }, BROW = { x: 528, y: 330 };
 
   // ---- content & language (texts live in i18n.js) ----
   const LANGS = ['de', 'en', 'ru'];
@@ -27,7 +27,7 @@
   let TP = [], MP = [], EP = {};
   const mouse = { x: -1e4, y: -1e4 };
   const imgSide = new Image(), imgFront = new Image();
-  let loaded = 0, ready = false, worldA = 1, worldAT = 1;
+  let loaded = 0, ready = false, worldA = 1, worldAT = 1, watchA = 0, watchT0 = 0;
   // camera: focus point P (screen coords at zoom 1) is shown at anchor A with zoom z
   const cam = { z: 1, px: 0, py: 0, ax: 0, ay: 0 }, camT = { z: 1, px: 0, py: 0, ax: 0, ay: 0 };
 
@@ -173,6 +173,27 @@
     if (pulse > .01) { x.globalCompositeOperation = 'lighter'; glow(cx, cy, 30 + pulse * 70, `rgba(94,240,255,${Math.min(.45, pulse * .4)})`); x.globalCompositeOperation = 'source-over'; pulse *= .965; }
     for (const r of rings) { r.r += r.v; r.a *= .955; x.strokeStyle = `rgba(94,240,255,${r.a})`; x.lineWidth = 1.1; x.beginPath(); x.ellipse(cx, cy, r.r, r.r * .5, 0, 0, 7); x.stroke(); }
     rings = rings.filter(r => r.a > .02);
+    // time rush on the watch dial (Lebenslauf): hands race around, years fly by
+    if (watchA > .01) {
+      const wx = fx(WATCH.x), wy = fy(WATCH.y), wr = WATCH.r * s, el = (performance.now() - watchT0) / 1000;
+      const sp = reduce ? 0 : el * el * 9, a = watchA * worldA;
+      x.save(); x.globalCompositeOperation = 'lighter';
+      glow(wx, wy, wr * 1.6, `rgba(94,240,255,${.25 * a})`);
+      x.strokeStyle = `rgba(94,240,255,${.8 * a})`; x.lineWidth = wr * .035;
+      x.beginPath(); x.arc(wx, wy, wr * 1.04, 0, 7); x.stroke();
+      for (let i = 0; i < 60; i++) {
+        const an = i / 60 * Math.PI * 2, l = i % 5 ? .06 : .14;
+        x.globalAlpha = (i % 5 ? .35 : .9) * a;
+        x.beginPath(); x.moveTo(wx + Math.cos(an) * wr * .97, wy + Math.sin(an) * wr * .97); x.lineTo(wx + Math.cos(an) * wr * (.97 - l), wy + Math.sin(an) * wr * (.97 - l)); x.stroke();
+      }
+      x.globalAlpha = a; x.lineCap = 'round';
+      const hand = (ang, len, w, col) => { x.strokeStyle = col; x.lineWidth = wr * w; x.beginPath(); x.moveTo(wx, wy); x.lineTo(wx + Math.sin(ang) * wr * len, wy - Math.cos(ang) * wr * len); x.stroke(); };
+      hand(sp * .08, .5, .07, 'rgba(234,252,255,.95)');
+      hand(sp, .78, .045, 'rgba(94,240,255,1)');
+      hand(sp * 4, .86, .02, 'rgba(255,255,255,.9)');
+      x.fillStyle = '#eafcff'; x.beginPath(); x.arc(wx, wy, wr * .05, 0, 7); x.fill();
+      x.restore();
+    }
     x.restore();
 
     // screen layer: text particles
@@ -261,10 +282,11 @@
       later(() => show(el), 750);
     } else if (name === 'lebenslauf') {
       $('st').textContent = L().topics.lebenslauf;
-      // the portrait dissolves, a desk globe appears
-      Object.assign(camT, { z: .85, px: W / 2, py: H / 2, ax: W / 2, ay: H * .42 }); worldAT = 0;
-      later(() => globeOn(true), 350);
-      later(() => { show(el); buildStops(); }, 900);
+      // the camera dives into the watch – time races – then the desk globe takes over
+      Object.assign(camT, { z: W < 600 ? 7.5 : 6.5, px: fx(WATCH.x), py: fy(WATCH.y), ax: W / 2, ay: H * .45 });
+      watchA = 1; watchT0 = performance.now();
+      later(() => { worldAT = 0; globeOn(true); }, reduce ? 300 : 1900);
+      later(() => { show(el); buildStops(); }, reduce ? 500 : 2500);
     } else {
       $('st').textContent = L().topics.projekte;
       // camera dives into the eye, then the eye scene takes over
@@ -275,7 +297,7 @@
   }
   function show(el) { el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); }
   function closeTopics() {
-    clearTimers(); eyeOn(false); globeOn(false); worldAT = 1;
+    clearTimers(); eyeOn(false); globeOn(false); worldAT = 1; watchA = 0;
     document.querySelectorAll('.topic').forEach(el => { el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); });
     $('pcard').hidden = true;
   }
