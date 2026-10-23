@@ -4,11 +4,33 @@
   const SIDE = { x: 0, y: 0, s: 0.8, w: 1084, h: 1451 };   // placement of the side photo, set in layout()
   const FRONT = { x: 0, y: 0, s: 1 };
   const CHEST = { x: 500, y: 760 }, FACE = { x: 528, y: 470 }, EYE = { x: 481, y: 386 };
+  const ARM = { x: 330, y: 1010 }, BROW = { x: 528, y: 330 };
 
-  // Projects (timeline inside the eye). Descriptions: to be filled from the CV.
+  // ---- content (from the CV, Oct 2026) ----
   const PROJECTS = [
-    { y: '2014', t: 'Olympische Spiele', d: 'Projektbeschreibung folgt – Rolle, Aufgabe und Ergebnis aus dem Lebenslauf.' },
-    { y: '2017', t: 'EXPO 2017', d: 'Projektbeschreibung folgt – Rolle, Aufgabe und Ergebnis aus dem Lebenslauf.' },
+    { y: '2004–10', t: 'Internationale Logistikprojekte', k: 'Volkswagen Original Teile', d: 'Koordination internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft – Prozesse, Schnittstellen, Lieferantenkommunikation.' },
+    { y: '2014', t: 'Olympische Winterspiele Sotschi', k: 'Volkswagen Group Russia · Projektleitung', d: 'Rund 130 Mio. € Projektvolumen, rund 4.000 Fahrzeuge, rund 50 Mitarbeitende – und rund 15 Mio. € Einsparungen. Fahrzeugbereitstellung, Logistik, Budget und Leitung des Sponsoring-Komitees.' },
+    { y: '2017', t: 'EXPO 2017 Astana', k: 'Teams Solutions GmbH · Gründer & Geschäftsführer', d: 'Konzeption und Umsetzung eines Themenpavillons mit rund 2.000 m², 30 Aussteller, rund 30 Mitarbeitende – Gesamtverantwortung für Zeitplan, Budget und Umsetzung.' },
+    { y: '2018–21', t: 'Regionalisierung Kasachstan & Usbekistan', k: 'Volkswagen Group Russia · Leiter Business Development', d: 'Händlernetz-Strategie, Vertrieb, Marketing und Aftersales nach VW-Standards mit rund 50 Mitarbeitenden. Mitarbeit an der Einführung einer SKD-Fahrzeugfertigung in Usbekistan.' },
+    { y: '2022–24', t: 'Internationaler Fahrzeughandel & Export', k: 'Selbstständig', d: 'Fahrzeughandel und -export aus Deutschland: Planung, Zoll- und Exportdokumentation, internationale Transporte und Übergaben an Partner im Ausland.' },
+    { y: '2025', t: 'Fahrzeuglogistik mit KI', k: 'Selbstständig · ChatGPT & Claude', d: 'Regionale und nationale Fahrzeugtransporte – mit KI für Prozessanalyse, Automatisierung und Dokumentation. Konzept einer eigenen App für Fahrzeuglogistik und Tourenplanung.' },
+  ];
+  const STATS = [['~20', 'Jahre international'], ['4', 'Länder geführt'], ['130 Mio. €', 'größtes Projekt']];
+  const SKILLS = [
+    { h: 'Kernkompetenzen', c: ['Führung & Teammanagement', 'Vertrieb & Business Development', 'Marketing & Events', 'Händler- & Partnernetze', 'Fahrzeug- & Teilelogistik', 'Export, Import & Zoll', 'Projekt- & Programmleitung', 'Vertragsverhandlungen'] },
+    { h: 'KI & digitale Tools', ai: true, c: ['ChatGPT', 'Claude / Claude Code', 'Prozessautomatisierung', 'KI-gestütztes Prototyping', 'Prozessdigitalisierung'] },
+    { h: 'Stärken', c: ['Belastbar unter Druck', 'Hands-on', 'Internationales Stakeholder-Management', 'Strukturiertes Reporting', 'Kaufmännisches Verständnis', 'Schnelle Einarbeitung'] },
+    { h: 'Software', c: ['Excel', 'PowerPoint', 'Word', 'MS Project'] },
+  ];
+  const STATIONS = [
+    { y: '1979', n: 'Geboren in Kasachstan', d: 'Deutsch-russischsprachiger Hintergrund – die Basis für alles, was folgt.', p: [[48.0, 67.0]] },
+    { y: '2000–2004', n: 'Studium · Universität Kassel', d: 'Duales Studium „Studium im Praxisverbund“, Abschluss Dipl.-Ing. Maschinenbau.', p: [[51.31, 9.48]] },
+    { y: '2004–2010', n: 'Volkswagen Original Teile', d: 'Koordinator internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft.', p: [[51.25, 9.42]] },
+    { y: '2011–2015', n: 'Moskau · Volkswagen Group Russia', d: 'Assistent des Generaldirektors, danach Leiter Business Development.', p: [[55.75, 37.62]] },
+    { y: '2014', n: 'Sotschi · Olympische Winterspiele', d: 'Projektleitung: rund 4.000 Fahrzeuge, rund 130 Mio. € Projektvolumen.', p: [[43.6, 39.73]] },
+    { y: '2016–2017', n: 'Astana · EXPO 2017', d: 'Gründer & Geschäftsführer der Teams Solutions GmbH – Themenpavillon mit rund 2.000 m².', p: [[51.17, 71.43]] },
+    { y: '2018–2021', n: 'Almaty & Taschkent', d: 'Regionalisierung von Volkswagen in Kasachstan und Usbekistan mit rund 50 Mitarbeitenden.', p: [[43.24, 76.89], [41.3, 69.24]] },
+    { y: '2022 – heute', n: 'Baunatal / Kassel', d: 'Selbstständig: Fahrzeughandel, Export und heute Fahrzeuglogistik – mit KI im Alltag.', p: [[51.25, 9.42]] },
   ];
 
   const c = document.getElementById('c'), x = c.getContext('2d');
@@ -22,7 +44,7 @@
   let TP = [], MP = [], EP = {};
   const mouse = { x: -1e4, y: -1e4 };
   const imgSide = new Image(), imgFront = new Image();
-  let loaded = 0, ready = false;
+  let loaded = 0, ready = false, worldA = 1, worldAT = 1;
   // camera: focus point P (screen coords at zoom 1) is shown at anchor A with zoom z
   const cam = { z: 1, px: 0, py: 0, ax: 0, ay: 0 }, camT = { z: 1, px: 0, py: 0, ax: 0, ay: 0 };
 
@@ -144,7 +166,8 @@
       const flick = reduce ? 1 : .96 + R() * .04;
       const done = state === 'done' || state === 'topic';
       const aSide = state === 'form' ? .95 * flick : done ? 0 : (1 - clamp((T - .55) / .45)) * .95;
-      const aFront = state === 'form' ? 0 : done ? flick : clamp((T - 1.9) / .8) * flick;
+      worldA += (worldAT - worldA) * .06;
+      const aFront = (state === 'form' ? 0 : done ? flick : clamp((T - 1.9) / .8) * flick) * worldA;
       const aMorph = state !== 'fly' ? 0 : clamp((T - .45) / .25) * (1 - clamp((T - 2.1) / .7));
       drawImg(imgSide, SIDE, aSide); drawEdges(EP.side, aSide);
       drawImg(imgFront, FRONT, aFront); drawEdges(EP.front, aFront);
@@ -234,15 +257,31 @@
 
   function openTopic(name) {
     if (state !== 'done') return;
-    if (name !== 'sprachen' && name !== 'projekte') { toast(`${name[0].toUpperCase() + name.slice(1)} – kommt bald`); return; }
+    const el = $('topic-' + name);
+    if (!el) return;
     state = 'topic'; clearTimers();
     $('main').classList.add('away'); $('menu').classList.add('hide');
-    const el = $('topic-' + name);
     if (name === 'sprachen') {
       $('st').textContent = 'Sprachen';
       // camera moves towards the face
       Object.assign(camT, { z: W < 600 ? 2.5 : 2.4, px: fx(FACE.x), py: fy(FACE.y), ax: W / 2, ay: H * .3 });
       later(() => { show(el); typeLangs(); }, 800);
+    } else if (name === 'skills') {
+      $('st').textContent = 'Skills';
+      // camera glides to the arm with the watch
+      Object.assign(camT, { z: W < 600 ? 1.9 : 1.8, px: fx(ARM.x), py: fy(ARM.y), ax: W * .5, ay: H * .22 });
+      later(() => { show(el); buildSkills(); }, 750);
+    } else if (name === 'ausbildung') {
+      $('st').textContent = 'Ausbildung';
+      // camera rises to the forehead – the knowledge
+      Object.assign(camT, { z: W < 600 ? 2.3 : 2.2, px: fx(BROW.x), py: fy(BROW.y), ax: W / 2, ay: H * .22 });
+      later(() => show(el), 750);
+    } else if (name === 'lebenslauf') {
+      $('st').textContent = 'Lebenslauf';
+      // the portrait dissolves, a desk globe appears
+      Object.assign(camT, { z: .85, px: W / 2, py: H / 2, ax: W / 2, ay: H * .42 }); worldAT = 0;
+      later(() => globeOn(true), 350);
+      later(() => { show(el); buildStops(); }, 900);
     } else {
       $('st').textContent = 'Projekte';
       // camera dives into the eye, then the eye scene takes over
@@ -253,7 +292,7 @@
   }
   function show(el) { el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); }
   function closeTopics() {
-    clearTimers(); eyeOn(false);
+    clearTimers(); eyeOn(false); globeOn(false); worldAT = 1;
     document.querySelectorAll('.topic').forEach(el => { el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); });
     $('pcard').hidden = true;
   }
@@ -266,12 +305,14 @@
     const next = () => {
       if (i >= items.length || state !== 'topic') return;
       const li = items[i], txt = li.dataset.text; let k = 0;
-      li.classList.add('cur');
+      const word = document.createElement('span'), lv = document.createElement('span');
+      lv.className = 'lv'; lv.textContent = li.dataset.level || '';
+      li.append(word, lv); li.classList.add('cur');
       const tick = () => {
         if (state !== 'topic') return;
-        li.textContent = txt.slice(0, ++k);
+        word.textContent = txt.slice(0, ++k);
         if (k < txt.length) later(tick, 70 + R() * 70);
-        else later(() => { li.classList.remove('cur'); i++; next(); }, 350);
+        else later(() => { li.classList.remove('cur'); lv.classList.add('in'); i++; next(); }, 350);
       };
       later(tick, 200);
     };
@@ -291,11 +332,133 @@
         const card = $('pcard');
         if (open) { card.hidden = true; return; }
         b.setAttribute('aria-expanded', 'true');
-        $('pk').textContent = p.y; $('pt').textContent = p.t; $('pd').textContent = p.d; card.hidden = false;
+        $('pk').textContent = `${p.y} · ${p.k}`; $('pt').textContent = p.t; $('pd').textContent = p.d; card.hidden = false;
       });
       li.appendChild(b); ol.appendChild(li);
       later(() => li.classList.add('in'), 150 + i * 220);
     });
+  }
+
+  // skills
+  function buildSkills() {
+    const st = $('stats'), sk = $('skills'); st.innerHTML = ''; sk.innerHTML = '';
+    STATS.forEach(([v, l], i) => {
+      const d = document.createElement('div'); d.className = 'stat'; d.innerHTML = `<b>${v}</b><span>${l}</span>`;
+      st.appendChild(d); later(() => d.classList.add('in'), 100 + i * 150);
+    });
+    let n = 0;
+    SKILLS.forEach(g => {
+      const box = document.createElement('div'); box.className = 'sgroup';
+      box.innerHTML = `<h4>${g.h}</h4>`; const ch = document.createElement('div'); ch.className = 'chips';
+      g.c.forEach(c2 => {
+        const e = document.createElement('span'); e.className = 'chip2' + (g.ai ? ' ai' : ''); e.textContent = c2;
+        ch.appendChild(e); later(() => e.classList.add('in'), 500 + (n++) * 45);
+      });
+      box.appendChild(ch); sk.appendChild(box);
+    });
+  }
+
+  // ---- desk globe (Lebenslauf) ----
+  const gc = $('globe'), gx = gc.getContext('2d');
+  let globeActive = false, globeRaf = 0, LAND = null, rot = { lon: 0, lat: 20 }, rotT = { lon: 0, lat: 20 }, stIdx = 0, auto = 0, gT0 = 0;
+  fetch('land.json').then(r => r.json()).then(a => {
+    LAND = [];
+    for (let i = 0; i < a.length; i += 3) {
+      const la = a[i] * Math.PI / 180, lo = a[i + 1] * Math.PI / 180;
+      LAND.push([Math.cos(la) * Math.sin(lo), Math.sin(la), Math.cos(la) * Math.cos(lo), a[i + 2]]);
+    }
+  }).catch(() => { LAND = []; });
+  const v3 = (lat, lon) => { const la = lat * Math.PI / 180, lo = lon * Math.PI / 180; return [Math.cos(la) * Math.sin(lo), Math.sin(la), Math.cos(la) * Math.cos(lo)]; };
+  function proj(p, gcx, gcy, r) {
+    const l = -rot.lon * Math.PI / 180, b = rot.lat * Math.PI / 180;
+    const x1 = p[0] * Math.cos(l) + p[2] * Math.sin(l), z1 = -p[0] * Math.sin(l) + p[2] * Math.cos(l);
+    const y2 = p[1] * Math.cos(b) - z1 * Math.sin(b), z2 = p[1] * Math.sin(b) + z1 * Math.cos(b);
+    return [gcx + x1 * r, gcy - y2 * r, z2];
+  }
+  function globeOn(on) {
+    if (on === globeActive) return;
+    globeActive = on; gc.classList.toggle('on', on);
+    if (on) {
+      gc.width = W * D; gc.height = H * D; gx.setTransform(D, 0, 0, D, 0, 0);
+      rot = { lon: 20, lat: 25 }; gT0 = performance.now(); cancelAnimationFrame(globeRaf); globeLoop();
+    } else { clearInterval(auto); setTimeout(() => { if (!globeActive) cancelAnimationFrame(globeRaf); }, 1100); }
+  }
+  function centreOf(st) { let la = 0, lo = 0; st.p.forEach(q => { la += q[0]; lo += q[1]; }); return { lat: la / st.p.length, lon: lo / st.p.length }; }
+  function selectStation(i, user) {
+    stIdx = i; const st = STATIONS[i], c0 = centreOf(st);
+    rotT = { lat: clamp(c0.lat * .6, -30, 40), lon: c0.lon };
+    $('sy').textContent = st.y; $('sn').textContent = st.n; $('sd').textContent = st.d;
+    document.querySelectorAll('#stops button').forEach((b, k) => b.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+    if (user) clearInterval(auto);
+  }
+  function buildStops() {
+    const box = $('stops'); box.innerHTML = '';
+    STATIONS.forEach((st, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = st.y.split(/[–\s]/)[0];
+      b.addEventListener('click', () => selectStation(i, true)); box.appendChild(b);
+    });
+    selectStation(0); clearInterval(auto);
+    if (!reduce) auto = setInterval(() => { if (state === 'topic' && globeActive) selectStation((stIdx + 1) % STATIONS.length); }, 4200);
+  }
+  function globeLoop() {
+    const tt = (performance.now() - gT0) / 1000;
+    let dl = ((rotT.lon - rot.lon + 540) % 360) - 180;
+    rot.lon += dl * .05; rot.lat += (rotT.lat - rot.lat) * .05;
+    const r = Math.min(W * .38, H * .25) * (.8 + .2 * ease(clamp(tt / 1))), gcx = W / 2, gcy = H * .32;
+    gx.clearRect(0, 0, W, H);
+    // stand of the desk globe
+    gx.strokeStyle = 'rgba(94,240,255,.35)'; gx.lineWidth = 1.2;
+    gx.beginPath(); gx.moveTo(gcx, gcy + r * 1.12); gx.lineTo(gcx, gcy + r * 1.36); gx.stroke();
+    gx.beginPath(); gx.ellipse(gcx, gcy + r * 1.4, r * .5, r * .09, 0, 0, 7); gx.stroke();
+    gx.fillStyle = 'rgba(94,240,255,.06)'; gx.fill();
+    // sphere
+    const sg = gx.createRadialGradient(gcx - r * .3, gcy - r * .35, r * .1, gcx, gcy, r);
+    sg.addColorStop(0, 'rgba(40,120,150,.35)'); sg.addColorStop(1, 'rgba(4,20,30,.55)');
+    gx.fillStyle = sg; gx.beginPath(); gx.arc(gcx, gcy, r, 0, 7); gx.fill();
+    gx.strokeStyle = 'rgba(94,240,255,.55)'; gx.lineWidth = 1; gx.stroke();
+    // meridian ring (tilted, like a desk globe)
+    gx.save(); gx.translate(gcx, gcy); gx.rotate(-.41);
+    gx.strokeStyle = 'rgba(94,240,255,.45)'; gx.lineWidth = 2;
+    gx.beginPath(); gx.ellipse(0, 0, r * 1.1, r * 1.1, 0, Math.PI * .55, Math.PI * 2.45); gx.stroke();
+    gx.restore();
+    // graticule
+    gx.strokeStyle = 'rgba(94,240,255,.10)'; gx.lineWidth = .7;
+    for (let la = -60; la <= 60; la += 30) { gx.beginPath(); let pen = false; for (let lo = -180; lo <= 180; lo += 6) { const q = proj(v3(la, lo), gcx, gcy, r); if (q[2] > 0) { pen ? gx.lineTo(q[0], q[1]) : gx.moveTo(q[0], q[1]); pen = true; } else pen = false; } gx.stroke(); }
+    for (let lo = -180; lo < 180; lo += 30) { gx.beginPath(); let pen = false; for (let la = -80; la <= 80; la += 5) { const q = proj(v3(la, lo), gcx, gcy, r); if (q[2] > 0) { pen ? gx.lineTo(q[0], q[1]) : gx.moveTo(q[0], q[1]); pen = true; } else pen = false; } gx.stroke(); }
+    // land dots
+    if (LAND) {
+      const sz = W < 600 ? 1.5 : 1.8;
+      for (const p of LAND) {
+        const q = proj(p, gcx, gcy, r); if (q[2] <= 0) continue;
+        const a = .25 + .75 * q[2];
+        gx.fillStyle = p[3] ? `rgba(94,240,255,${a})` : `rgba(150,200,215,${a * .45})`;
+        gx.fillRect(q[0] - sz / 2, q[1] - sz / 2, sz, sz);
+      }
+    }
+    // route between stations
+    gx.strokeStyle = 'rgba(255,255,255,.35)'; gx.lineWidth = 1; gx.setLineDash([3, 4]);
+    for (let i = 1; i < STATIONS.length; i++) {
+      const a = STATIONS[i - 1].p[0], b = STATIONS[i].p[0], va = v3(a[0], a[1]), vb = v3(b[0], b[1]);
+      gx.beginPath(); let pen = false;
+      for (let k = 0; k <= 24; k++) {
+        const f = k / 24, m = [va[0] * (1 - f) + vb[0] * f, va[1] * (1 - f) + vb[1] * f, va[2] * (1 - f) + vb[2] * f];
+        const L = Math.hypot(...m) || 1, lift = 1 + .06 * Math.sin(f * Math.PI), q = proj([m[0] / L * lift, m[1] / L * lift, m[2] / L * lift], gcx, gcy, r);
+        if (q[2] > 0) { pen ? gx.lineTo(q[0], q[1]) : gx.moveTo(q[0], q[1]); pen = true; } else pen = false;
+      }
+      gx.stroke();
+    }
+    gx.setLineDash([]);
+    // station markers
+    STATIONS.forEach((st, i) => st.p.forEach(pp => {
+      const q = proj(v3(pp[0], pp[1]), gcx, gcy, r); if (q[2] <= 0) return;
+      const on = i === stIdx, pr = on ? 4 + 2 * Math.sin(tt * 4) : 2.5;
+      gx.fillStyle = on ? '#fff' : 'rgba(94,240,255,.9)'; gx.beginPath(); gx.arc(q[0], q[1], pr * .7, 0, 7); gx.fill();
+      if (on) {
+        gx.strokeStyle = 'rgba(94,240,255,.8)'; gx.lineWidth = 1.2;
+        gx.beginPath(); gx.arc(q[0], q[1], 9 + (tt * 14) % 14, 0, 7); gx.stroke();
+      }
+    }));
+    globeRaf = requestAnimationFrame(globeLoop);
   }
 
   // eye scene (separate canvas): iris, pupil, fibres
@@ -364,6 +527,6 @@
 
   const onload = () => { if (++loaded === 2) { buildParticles(); ready = true; } };
   imgSide.onload = imgFront.onload = onload;
-  imgSide.src = 'side2.webp'; imgFront.src = 'front2.webp';
+  imgSide.src = 'side3.webp'; imgFront.src = 'front3.webp';
   layout(); frame();
 })();
