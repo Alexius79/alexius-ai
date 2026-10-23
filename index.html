@@ -8,81 +8,87 @@
 <meta name="theme-color" content="#03060a">
 <meta property="og:title" content="alexius.ai – Alexander Hirsekorn">
 <meta property="og:description" content="Ingenieur · Macher · AI-Builder.">
+<link rel="alternate" hreflang="de" href="https://alexius.ai/?lang=de">
+<link rel="alternate" hreflang="en" href="https://alexius.ai/?lang=en">
+<link rel="alternate" hreflang="ru" href="https://alexius.ai/?lang=ru">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2303060a'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='28' fill='%235ef0ff' text-anchor='middle'%3EAH%3C/text%3E%3C/svg%3E">
-<link rel="preload" href="side3.webp" as="image"><link rel="preload" href="front3.webp" as="image">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="preload" href="side3.webp" as="image"><link rel="preload" href="front4.webp" as="image">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
-<canvas id="c" aria-label="Alexander Hirsekorn als Hologramm mit dem Schriftzug alexius.ai"></canvas>
+<canvas id="c" aria-label="Alexander Hirsekorn – alexius.ai"></canvas>
 <canvas id="eye" aria-hidden="true"></canvas>
 <div class="scan"></div><div class="vig"></div>
-<header><div class="logo">AH<span>.</span></div><div class="pill mono"><i></i><span id="st">Hologramm bereit</span></div></header>
-<div class="hint mono" id="hint">Tippe auf alexius.ai</div>
+<header>
+  <div class="logo">AH<span>.</span></div>
+  <div class="langsw mono" id="langsw" role="group" aria-label="Sprache / Language / Язык">
+    <button data-lang="de">DE</button><button data-lang="en">EN</button><button data-lang="ru">RU</button>
+  </div>
+  <div class="pill mono"><i></i><span id="st">Hologramm bereit</span></div>
+</header>
+
+<div class="startlang mono" id="startlang" role="group" aria-label="Sprache / Language / Язык">
+  <button data-lang="de">DE</button><button data-lang="en">EN</button><button data-lang="ru">RU</button>
+</div>
+<div class="hint mono" id="hint" data-i18n="hint">Tippe auf alexius.ai oder wähle eine Sprache</div>
 
 <nav id="menu" aria-label="Themen">
-  <button class="mbtn mono" data-topic="sprachen"><b>01</b>Sprachen</button>
-  <button class="mbtn mono" data-topic="projekte"><b>02</b>Projekte</button>
-  <button class="mbtn mono" data-topic="skills"><b>03</b>Skills</button>
-  <button class="mbtn mono" data-topic="lebenslauf"><b>04</b>Lebenslauf</button>
-  <button class="mbtn mono" data-topic="ausbildung"><b>05</b>Ausbildung</button>
+  <button class="mbtn mono" data-topic="sprachen"><b>01</b><span data-t="sprachen">Sprachen</span></button>
+  <button class="mbtn mono" data-topic="projekte"><b>02</b><span data-t="projekte">Projekte</span></button>
+  <button class="mbtn mono" data-topic="skills"><b>03</b><span data-t="skills">Skills</span></button>
+  <button class="mbtn mono" data-topic="lebenslauf"><b>04</b><span data-t="lebenslauf">Lebenslauf</span></button>
+  <button class="mbtn mono" data-topic="ausbildung"><b>05</b><span data-t="ausbildung">Ausbildung</span></button>
 </nav>
 
 <main id="main">
-  <div class="kicker mono">// Das bin ich</div>
+  <div class="kicker mono" data-i18n="kicker">// Das bin ich</div>
   <h1 id="name">ALEXANDER HIRSEKORN</h1>
-  <div class="sub mono">Ingenieur · Macher · AI-Builder</div>
-  <div class="soon">Wähle ein Thema – die Reise beginnt.</div>
-  <button class="again mono" id="again" type="button">↺ Nochmal</button>
+  <div class="sub mono" data-i18n="sub">Ingenieur · Macher · AI-Builder</div>
+  <div class="soon" data-i18n="soon">Wähle ein Thema – die Reise beginnt.</div>
+  <button class="again mono" id="again" type="button" data-i18n="again">↺ Nochmal</button>
 </main>
 
 <section id="topic-sprachen" class="topic" aria-hidden="true">
-  <div class="kicker mono">// Sprachen</div>
-  <ul class="type mono" aria-label="Deutsch, Englisch, Russisch">
-    <li data-text="Deutsch" data-level="Muttersprache"></li>
-    <li data-text="Englisch" data-level="fließend"></li>
-    <li data-text="Russisch" data-level="fließend"></li>
-  </ul>
-  <button class="back mono" type="button">← Zurück</button>
+  <div class="kicker mono" data-k="sprachen"></div>
+  <ul class="type mono" id="langlist"><li></li><li></li><li></li></ul>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
 <section id="topic-projekte" class="topic topic-eye" aria-hidden="true">
-  <div class="kicker mono">// Projekte</div>
+  <div class="kicker mono" data-k="projekte"></div>
   <ol class="timeline" id="timeline"></ol>
   <div class="pcard" id="pcard" hidden><div class="mono pk" id="pk"></div><h3 id="pt"></h3><p id="pd"></p></div>
-  <button class="back mono" type="button">← Zurück</button>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
 <section id="topic-skills" class="topic" aria-hidden="true">
-  <div class="kicker mono">// Skills</div>
+  <div class="kicker mono" data-k="skills"></div>
   <div class="stats" id="stats"></div>
   <div class="skills" id="skills"></div>
-  <button class="back mono" type="button">← Zurück</button>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
 <canvas id="globe" aria-hidden="true"></canvas>
 <section id="topic-lebenslauf" class="topic topic-globe" aria-hidden="true">
-  <div class="kicker mono">// Lebenslauf</div>
-  <div class="station" id="station"><div class="mono sk" id="sy"></div><h3 id="sn"></h3><p id="sd"></p></div>
-  <div class="stops" id="stops" role="tablist" aria-label="Stationen"></div>
-  <button class="back mono" type="button">← Zurück</button>
+  <div class="kicker mono" data-k="lebenslauf"></div>
+  <div class="station" id="station" aria-live="polite"><div class="mono sk" id="sy"></div><h3 id="sn"></h3><p id="sd"></p></div>
+  <div class="stops" id="stops" role="tablist"></div>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
 <section id="topic-ausbildung" class="topic" aria-hidden="true">
-  <div class="kicker mono">// Ausbildung</div>
+  <div class="kicker mono" data-k="ausbildung"></div>
   <div class="diploma" id="diploma">
     <svg class="gear" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 30a20 20 0 1 0 0.01 0Z M50 41a9 9 0 1 1-0.01 0Z" fill="none" stroke="currentColor" stroke-width="2"/><g stroke="currentColor" stroke-width="7" stroke-linecap="square"><line x1="50" y1="12" x2="50" y2="22"/><line x1="50" y1="78" x2="50" y2="88"/><line x1="12" y1="50" x2="22" y2="50"/><line x1="78" y1="50" x2="88" y2="50"/><line x1="23" y1="23" x2="30" y2="30"/><line x1="70" y1="70" x2="77" y2="77"/><line x1="23" y1="77" x2="30" y2="70"/><line x1="70" y1="30" x2="77" y2="23"/></g></svg>
-    <div class="mono dk">Universität Kassel</div>
-    <h3>Diplom-Ingenieur<br>Maschinenbau</h3>
-    <ol class="dl">
-      <li><span class="mono">2000 – 2004</span>Duales Studium „Studium im Praxisverbund“</li>
-      <li><span class="mono">2004</span>Abschluss Dipl.-Ing. Maschinenbau</li>
-      <li><span class="mono">2004 →</span>Start bei Volkswagen, internationale Logistikprojekte</li>
-    </ol>
+    <div class="mono dk" id="eduUni"></div>
+    <h3 id="eduTitle"></h3>
+    <ol class="dl" id="eduList"></ol>
   </div>
-  <button class="back mono" type="button">← Zurück</button>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
-<div class="toast mono" id="toast">Kommt bald</div>
-<script src="app.js?v=5"></script>
+<div class="toast mono" id="toast"></div>
+<script src="i18n.js?v=6"></script>
+<script src="app.js?v=6"></script>
 </body>
 </html>

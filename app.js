@@ -6,32 +6,15 @@
   const CHEST = { x: 500, y: 760 }, FACE = { x: 528, y: 470 }, EYE = { x: 481, y: 386 };
   const ARM = { x: 330, y: 1010 }, BROW = { x: 528, y: 330 };
 
-  // ---- content (from the CV, Oct 2026) ----
-  const PROJECTS = [
-    { y: '2004–10', t: 'Internationale Logistikprojekte', k: 'Volkswagen Original Teile', d: 'Koordination internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft – Prozesse, Schnittstellen, Lieferantenkommunikation.' },
-    { y: '2014', t: 'Olympische Winterspiele Sotschi', k: 'Volkswagen Group Russia · Projektleitung', d: 'Rund 130 Mio. € Projektvolumen, rund 4.000 Fahrzeuge, rund 50 Mitarbeitende – und rund 15 Mio. € Einsparungen. Fahrzeugbereitstellung, Logistik, Budget und Leitung des Sponsoring-Komitees.' },
-    { y: '2017', t: 'EXPO 2017 Astana', k: 'Teams Solutions GmbH · Gründer & Geschäftsführer', d: 'Konzeption und Umsetzung eines Themenpavillons mit rund 2.000 m², 30 Aussteller, rund 30 Mitarbeitende – Gesamtverantwortung für Zeitplan, Budget und Umsetzung.' },
-    { y: '2018–21', t: 'Regionalisierung Kasachstan & Usbekistan', k: 'Volkswagen Group Russia · Leiter Business Development', d: 'Händlernetz-Strategie, Vertrieb, Marketing und Aftersales nach VW-Standards mit rund 50 Mitarbeitenden. Mitarbeit an der Einführung einer SKD-Fahrzeugfertigung in Usbekistan.' },
-    { y: '2022–24', t: 'Internationaler Fahrzeughandel & Export', k: 'Selbstständig', d: 'Fahrzeughandel und -export aus Deutschland: Planung, Zoll- und Exportdokumentation, internationale Transporte und Übergaben an Partner im Ausland.' },
-    { y: '2025', t: 'Fahrzeuglogistik mit KI', k: 'Selbstständig · ChatGPT & Claude', d: 'Regionale und nationale Fahrzeugtransporte – mit KI für Prozessanalyse, Automatisierung und Dokumentation. Konzept einer eigenen App für Fahrzeuglogistik und Tourenplanung.' },
-  ];
-  const STATS = [['~20', 'Jahre international'], ['4', 'Länder geführt'], ['130 Mio. €', 'größtes Projekt']];
-  const SKILLS = [
-    { h: 'Kernkompetenzen', c: ['Führung & Teammanagement', 'Vertrieb & Business Development', 'Marketing & Events', 'Händler- & Partnernetze', 'Fahrzeug- & Teilelogistik', 'Export, Import & Zoll', 'Projekt- & Programmleitung', 'Vertragsverhandlungen'] },
-    { h: 'KI & digitale Tools', ai: true, c: ['ChatGPT', 'Claude / Claude Code', 'Prozessautomatisierung', 'KI-gestütztes Prototyping', 'Prozessdigitalisierung'] },
-    { h: 'Stärken', c: ['Belastbar unter Druck', 'Hands-on', 'Internationales Stakeholder-Management', 'Strukturiertes Reporting', 'Kaufmännisches Verständnis', 'Schnelle Einarbeitung'] },
-    { h: 'Software', c: ['Excel', 'PowerPoint', 'Word', 'MS Project'] },
-  ];
-  const STATIONS = [
-    { y: '1979', n: 'Geboren in Kasachstan', d: 'Deutsch-russischsprachiger Hintergrund – die Basis für alles, was folgt.', p: [[48.0, 67.0]] },
-    { y: '2000–2004', n: 'Studium · Universität Kassel', d: 'Duales Studium „Studium im Praxisverbund“, Abschluss Dipl.-Ing. Maschinenbau.', p: [[51.31, 9.48]] },
-    { y: '2004–2010', n: 'Volkswagen Original Teile', d: 'Koordinator internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft.', p: [[51.25, 9.42]] },
-    { y: '2011–2015', n: 'Moskau · Volkswagen Group Russia', d: 'Assistent des Generaldirektors, danach Leiter Business Development.', p: [[55.75, 37.62]] },
-    { y: '2014', n: 'Sotschi · Olympische Winterspiele', d: 'Projektleitung: rund 4.000 Fahrzeuge, rund 130 Mio. € Projektvolumen.', p: [[43.6, 39.73]] },
-    { y: '2016–2017', n: 'Astana · EXPO 2017', d: 'Gründer & Geschäftsführer der Teams Solutions GmbH – Themenpavillon mit rund 2.000 m².', p: [[51.17, 71.43]] },
-    { y: '2018–2021', n: 'Almaty & Taschkent', d: 'Regionalisierung von Volkswagen in Kasachstan und Usbekistan mit rund 50 Mitarbeitenden.', p: [[43.24, 76.89], [41.3, 69.24]] },
-    { y: '2022 – heute', n: 'Baunatal / Kassel', d: 'Selbstständig: Fahrzeughandel, Export und heute Fahrzeuglogistik – mit KI im Alltag.', p: [[51.25, 9.42]] },
-  ];
+  // ---- content & language (texts live in i18n.js) ----
+  const LANGS = ['de', 'en', 'ru'];
+  let lang = 'de', PROJECTS, STATS, SKILLS, STATIONS;
+  const L = () => window.I18N[lang];
+  function loadContent() {
+    const d = L(); PROJECTS = d.projects; STATS = d.stats; SKILLS = d.skills;
+    STATIONS = d.stations.map((q, i) => ({ y: q[0], n: q[1], d: q[2], p: window.STATION_POINTS[i] }));
+  }
+  loadContent();
 
   const c = document.getElementById('c'), x = c.getContext('2d');
   const $ = id => document.getElementById(id);
@@ -59,7 +42,7 @@
     SIDE.s = W < 600 ? .82 : .78;
     SIDE.x = 560 - 450 * SIDE.s;
     SIDE.y = ((H * .31 - oy) / s) - 560 * SIDE.s;
-    textY = H * .65;
+    textY = H * .75;
     camRest(true);
     buildText();
     placeMenu();
@@ -229,7 +212,7 @@
   }
   function showMain() {
     $('main').classList.add('on'); $('main').classList.remove('away');
-    $('st').textContent = 'Das bin ich'; scramble($('name'));
+    $('st').textContent = L().ui.me; $('langsw').classList.add('on'); scramble($('name'));
     $('menu').classList.add('on'); $('menu').classList.remove('hide');
   }
   function placeMenu() {
@@ -240,13 +223,13 @@
   function go() {
     if (state !== 'form' || !ready) return;
     state = 'fly'; tTap = performance.now();
-    $('hint').classList.add('off'); $('st').textContent = 'Übertragung…';
+    $('hint').classList.add('off'); $('st').textContent = L().ui.transfer; $('startlang').classList.add('off');
   }
   function reset() {
     state = 'form'; pulse = 0; camRest(); closeTopics();
     for (const p of TP) { p.gone = false; p.x = fx(CHEST.x) + (R() - .5) * 20; p.y = fy(CHEST.y) + (R() - .5) * 20; p.vx = (R() - .5) * 30; p.vy = (R() - .5) * 30; }
     $('main').classList.remove('on'); $('menu').classList.remove('on');
-    $('hint').classList.remove('off'); $('st').textContent = 'Hologramm bereit';
+    $('hint').classList.remove('off'); $('st').textContent = L().ui.ready; $('startlang').classList.remove('off'); $('langsw').classList.remove('on');
   }
   function toast(msg) { const tt = $('toast'); tt.textContent = msg; tt.classList.add('on'); clearTimeout(tt._t); tt._t = setTimeout(() => tt.classList.remove('on'), 1600); }
 
@@ -262,28 +245,28 @@
     state = 'topic'; clearTimers();
     $('main').classList.add('away'); $('menu').classList.add('hide');
     if (name === 'sprachen') {
-      $('st').textContent = 'Sprachen';
+      $('st').textContent = L().topics.sprachen;
       // camera moves towards the face
       Object.assign(camT, { z: W < 600 ? 2.5 : 2.4, px: fx(FACE.x), py: fy(FACE.y), ax: W / 2, ay: H * .3 });
       later(() => { show(el); typeLangs(); }, 800);
     } else if (name === 'skills') {
-      $('st').textContent = 'Skills';
+      $('st').textContent = L().topics.skills;
       // camera glides to the arm with the watch
       Object.assign(camT, { z: W < 600 ? 1.9 : 1.8, px: fx(ARM.x), py: fy(ARM.y), ax: W * .5, ay: H * .22 });
       later(() => { show(el); buildSkills(); }, 750);
     } else if (name === 'ausbildung') {
-      $('st').textContent = 'Ausbildung';
+      $('st').textContent = L().topics.ausbildung;
       // camera rises to the forehead – the knowledge
       Object.assign(camT, { z: W < 600 ? 2.3 : 2.2, px: fx(BROW.x), py: fy(BROW.y), ax: W / 2, ay: H * .22 });
       later(() => show(el), 750);
     } else if (name === 'lebenslauf') {
-      $('st').textContent = 'Lebenslauf';
+      $('st').textContent = L().topics.lebenslauf;
       // the portrait dissolves, a desk globe appears
       Object.assign(camT, { z: .85, px: W / 2, py: H / 2, ax: W / 2, ay: H * .42 }); worldAT = 0;
       later(() => globeOn(true), 350);
       later(() => { show(el); buildStops(); }, 900);
     } else {
-      $('st').textContent = 'Projekte';
+      $('st').textContent = L().topics.projekte;
       // camera dives into the eye, then the eye scene takes over
       Object.assign(camT, { z: 7, px: fx(EYE.x), py: fy(EYE.y), ax: W / 2, ay: H * .3 });
       later(() => { eyeOn(true); }, 650);
@@ -299,8 +282,8 @@
 
   // typewriter
   function typeLangs() {
-    const items = [...document.querySelectorAll('#topic-sprachen .type li')];
-    items.forEach((li, i) => { li.textContent = ''; li.dataset.n = '0' + (i + 1); li.classList.remove('cur'); });
+    const items = [...document.querySelectorAll('#langlist li')];
+    items.forEach((li, i) => { li.textContent = ''; li.dataset.n = '0' + (i + 1); li.dataset.text = L().langs[i][0]; li.dataset.level = L().langs[i][1]; li.classList.remove('cur'); });
     let i = 0;
     const next = () => {
       if (i >= items.length || state !== 'topic') return;
@@ -507,7 +490,34 @@
     setTimeout(showMain, reduce ? 0 : 500);
   }
 
-  c.addEventListener('click', go);
+  // ---- language ----
+  function renderEdu() {
+    const e = L().edu; $('eduUni').textContent = e.uni; $('eduTitle').innerHTML = e.title;
+    $('eduList').innerHTML = e.items.map(([y, tx]) => `<li><span class="mono">${y}</span>${tx}</li>`).join('');
+  }
+  function setLang(l, silent) {
+    if (!LANGS.includes(l)) l = 'de';
+    lang = l; loadContent();
+    const d = L();
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = d.ui[el.dataset.i18n]; });
+    document.querySelectorAll('[data-t]').forEach(el => { el.textContent = d.topics[el.dataset.t]; });
+    document.querySelectorAll('[data-k]').forEach(el => { el.textContent = '// ' + d.topics[el.dataset.k]; });
+    $('menu').setAttribute('aria-label', d.ui.menu);
+    document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === l ? 'true' : 'false'));
+    $('st').textContent = state === 'form' ? d.ui.ready : state === 'fly' ? d.ui.transfer : d.ui.me;
+    renderEdu();
+    try { localStorage.setItem('alexius-lang', l); } catch (e) {}
+    try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+    if (!silent && state === 'topic') { closeTopics(); camRest(); state = 'done'; showMain(); }
+    else if (!silent && state === 'done') scramble($('name'));
+  }
+  document.querySelectorAll('#startlang [data-lang]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setLang(b.dataset.lang); go(); }));
+  document.querySelectorAll('#langsw [data-lang]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setLang(b.dataset.lang); }));
+  function placeStartLang() { $('startlang').style.top = Math.round(textY + TP.fs * .75) + 'px'; }
+
+  // tapping alexius.ai always starts in German
+  c.addEventListener('click', () => { if (state === 'form') { setLang('de', true); go(); } });
   $('again').addEventListener('click', e => { e.stopPropagation(); reset(); });
   document.querySelectorAll('.mbtn').forEach(b => b.addEventListener('click', () => openTopic(b.dataset.topic)));
   document.querySelectorAll('.topic .back').forEach(b => b.addEventListener('click', back));
@@ -527,6 +537,9 @@
 
   const onload = () => { if (++loaded === 2) { buildParticles(); ready = true; } };
   imgSide.onload = imgFront.onload = onload;
-  imgSide.src = 'side3.webp'; imgFront.src = 'front3.webp';
-  layout(); frame();
+  imgSide.src = 'side3.webp'; imgFront.src = 'front4.webp';
+  let initial = 'de';
+  try { initial = new URL(location.href).searchParams.get('lang') || localStorage.getItem('alexius-lang') || 'de'; } catch (e) {}
+  layout(); setLang(initial, true); placeStartLang(); frame();
+  addEventListener('resize', () => setTimeout(placeStartLang, 200));
 })();

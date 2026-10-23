@@ -1,0 +1,112 @@
+// All texts of alexius.ai in German, English and Russian (content from the CV, Oct 2026)
+window.I18N = {
+  de: {
+    ui: {
+      hint: 'Tippe auf alexius.ai oder wähle eine Sprache', ready: 'Hologramm bereit', transfer: 'Übertragung…', me: 'Das bin ich',
+      kicker: '// Das bin ich', sub: 'Ingenieur · Macher · AI-Builder', soon: 'Wähle ein Thema – die Reise beginnt.',
+      again: '↺ Nochmal', back: '← Zurück', menu: 'Themen',
+    },
+    topics: { sprachen: 'Sprachen', projekte: 'Projekte', skills: 'Skills', lebenslauf: 'Lebenslauf', ausbildung: 'Ausbildung' },
+    langs: [['Deutsch', 'Muttersprache'], ['Englisch', 'fließend'], ['Russisch', 'fließend']],
+    projects: [
+      { y: '2004–10', t: 'Internationale Logistikprojekte', k: 'Volkswagen Original Teile', d: 'Koordination internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft – Prozesse, Schnittstellen, Lieferantenkommunikation.' },
+      { y: '2014', t: 'Olympische Winterspiele Sotschi', k: 'Volkswagen Group Russia · Projektleitung', d: 'Rund 130 Mio. € Projektvolumen, rund 4.000 Fahrzeuge, rund 50 Mitarbeitende – und rund 15 Mio. € Einsparungen. Fahrzeugbereitstellung, Logistik, Budget und Leitung des Sponsoring-Komitees.' },
+      { y: '2017', t: 'EXPO 2017 Astana', k: 'Teams Solutions GmbH · Gründer & Geschäftsführer', d: 'Konzeption und Umsetzung eines Themenpavillons mit rund 2.000 m², 30 Aussteller, rund 30 Mitarbeitende – Gesamtverantwortung für Zeitplan, Budget und Umsetzung.' },
+      { y: '2018–21', t: 'Regionalisierung Kasachstan & Usbekistan', k: 'Volkswagen Group Russia · Leiter Business Development', d: 'Händlernetz-Strategie, Vertrieb, Marketing und Aftersales nach VW-Standards mit rund 50 Mitarbeitenden. Mitarbeit an der Einführung einer SKD-Fahrzeugfertigung in Usbekistan.' },
+      { y: '2022–24', t: 'Internationaler Fahrzeughandel & Export', k: 'Selbstständig', d: 'Fahrzeughandel und -export aus Deutschland: Planung, Zoll- und Exportdokumentation, internationale Transporte und Übergaben an Partner im Ausland.' },
+      { y: '2025', t: 'Fahrzeuglogistik mit KI', k: 'Selbstständig · ChatGPT & Claude', d: 'Regionale und nationale Fahrzeugtransporte – mit KI für Prozessanalyse, Automatisierung und Dokumentation. Konzept einer eigenen App für Fahrzeuglogistik und Tourenplanung.' },
+    ],
+    stats: [['~20', 'Jahre international'], ['4', 'Länder geführt'], ['130 Mio. €', 'größtes Projekt']],
+    skills: [
+      { h: 'Kernkompetenzen', c: ['Führung & Teammanagement', 'Vertrieb & Business Development', 'Marketing & Events', 'Händler- & Partnernetze', 'Fahrzeug- & Teilelogistik', 'Export, Import & Zoll', 'Projekt- & Programmleitung', 'Vertragsverhandlungen'] },
+      { h: 'KI & digitale Tools', ai: true, c: ['ChatGPT', 'Claude / Claude Code', 'Prozessautomatisierung', 'KI-gestütztes Prototyping', 'Prozessdigitalisierung'] },
+      { h: 'Stärken', c: ['Belastbar unter Druck', 'Hands-on', 'Internationales Stakeholder-Management', 'Strukturiertes Reporting', 'Kaufmännisches Verständnis', 'Schnelle Einarbeitung'] },
+      { h: 'Software', c: ['Excel', 'PowerPoint', 'Word', 'MS Project'] },
+    ],
+    stations: [
+      ['1979', 'Geboren in Kasachstan', 'Deutsch-russischsprachiger Hintergrund – die Basis für alles, was folgt.'],
+      ['2000–2004', 'Studium · Universität Kassel', 'Duales Studium „Studium im Praxisverbund“, Abschluss Dipl.-Ing. Maschinenbau.'],
+      ['2004–2010', 'Volkswagen Original Teile', 'Koordinator internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft.'],
+      ['2011–2015', 'Moskau · Volkswagen Group Russia', 'Assistent des Generaldirektors, danach Leiter Business Development.'],
+      ['2014', 'Sotschi · Olympische Winterspiele', 'Projektleitung: rund 4.000 Fahrzeuge, rund 130 Mio. € Projektvolumen.'],
+      ['2016–2017', 'Astana · EXPO 2017', 'Gründer & Geschäftsführer der Teams Solutions GmbH – Themenpavillon mit rund 2.000 m².'],
+      ['2018–2021', 'Almaty & Taschkent', 'Regionalisierung von Volkswagen in Kasachstan und Usbekistan mit rund 50 Mitarbeitenden.'],
+      ['2022 – heute', 'Baunatal / Kassel', 'Selbstständig: Fahrzeughandel, Export und heute Fahrzeuglogistik – mit KI im Alltag.'],
+    ],
+    edu: { uni: 'Universität Kassel', title: 'Diplom-Ingenieur<br>Maschinenbau', items: [['2000 – 2004', 'Duales Studium „Studium im Praxisverbund“'], ['2004', 'Abschluss Dipl.-Ing. Maschinenbau'], ['2004 →', 'Start bei Volkswagen, internationale Logistikprojekte']] },
+  },
+
+  en: {
+    ui: {
+      hint: 'Tap alexius.ai or choose a language', ready: 'Hologram ready', transfer: 'Transmitting…', me: 'This is me',
+      kicker: '// This is me', sub: 'Engineer · Doer · AI builder', soon: 'Pick a topic – the journey begins.',
+      again: '↺ Replay', back: '← Back', menu: 'Topics',
+    },
+    topics: { sprachen: 'Languages', projekte: 'Projects', skills: 'Skills', lebenslauf: 'Career', ausbildung: 'Education' },
+    langs: [['German', 'native'], ['English', 'fluent'], ['Russian', 'fluent']],
+    projects: [
+      { y: '2004–10', t: 'International logistics projects', k: 'Volkswagen Original Parts', d: 'Coordinated international logistics projects in the original parts and aftersales business – processes, interfaces, supplier communication.' },
+      { y: '2014', t: 'Sochi 2014 Winter Olympics', k: 'Volkswagen Group Russia · Project lead', d: 'About €130m project volume, about 4,000 vehicles, about 50 staff – and about €15m in savings. Vehicle provision, logistics, budget and chair of the sponsoring committee.' },
+      { y: '2017', t: 'EXPO 2017 Astana', k: 'Teams Solutions GmbH · Founder & Managing Director', d: 'Concept and delivery of a themed pavilion of about 2,000 m², 30 exhibitors, about 30 staff – full responsibility for schedule, budget and delivery.' },
+      { y: '2018–21', t: 'Regionalisation Kazakhstan & Uzbekistan', k: 'Volkswagen Group Russia · Head of Business Development', d: 'Dealer network strategy, sales, marketing and aftersales to VW standards with about 50 staff. Contributed to launching SKD vehicle assembly in Uzbekistan.' },
+      { y: '2022–24', t: 'International vehicle trade & export', k: 'Self-employed', d: 'Vehicle trading and export from Germany: planning, customs and export documentation, international transport and handovers to partners abroad.' },
+      { y: '2025', t: 'Vehicle logistics with AI', k: 'Self-employed · ChatGPT & Claude', d: 'Regional and national vehicle transport – using AI for process analysis, automation and documentation. Concept for a dedicated vehicle logistics and route planning app.' },
+    ],
+    stats: [['~20', 'years international'], ['4', 'countries led'], ['€130m', 'largest project']],
+    skills: [
+      { h: 'Core competencies', c: ['Leadership & team management', 'Sales & business development', 'Marketing & events', 'Dealer & partner networks', 'Vehicle & parts logistics', 'Export, import & customs', 'Project & programme management', 'Contract negotiation'] },
+      { h: 'AI & digital tools', ai: true, c: ['ChatGPT', 'Claude / Claude Code', 'Process automation', 'AI-assisted prototyping', 'Process digitalisation'] },
+      { h: 'Strengths', c: ['Resilient under pressure', 'Hands-on', 'International stakeholder management', 'Structured reporting', 'Strong commercial sense', 'Fast learner'] },
+      { h: 'Software', c: ['Excel', 'PowerPoint', 'Word', 'MS Project'] },
+    ],
+    stations: [
+      ['1979', 'Born in Kazakhstan', 'German-Russian background – the basis for everything that followed.'],
+      ['2000–2004', 'Studies · University of Kassel', 'Dual study programme, degree Dipl.-Ing. in Mechanical Engineering.'],
+      ['2004–2010', 'Volkswagen Original Parts', 'Coordinator of international logistics projects in original parts and aftersales.'],
+      ['2011–2015', 'Moscow · Volkswagen Group Russia', 'Assistant to the General Director, then Head of Business Development.'],
+      ['2014', 'Sochi · Winter Olympics', 'Project lead: about 4,000 vehicles, about €130m project volume.'],
+      ['2016–2017', 'Astana · EXPO 2017', 'Founder & Managing Director of Teams Solutions GmbH – themed pavilion of about 2,000 m².'],
+      ['2018–2021', 'Almaty & Tashkent', 'Regionalisation of Volkswagen in Kazakhstan and Uzbekistan with about 50 staff.'],
+      ['2022 – today', 'Baunatal / Kassel', 'Self-employed: vehicle trading, export and now vehicle logistics – with AI every day.'],
+    ],
+    edu: { uni: 'University of Kassel', title: 'Diplom-Ingenieur<br>Mechanical Engineering', items: [['2000 – 2004', 'Dual study programme “Studium im Praxisverbund”'], ['2004', 'Degree Dipl.-Ing. in Mechanical Engineering'], ['2004 →', 'Start at Volkswagen, international logistics projects']] },
+  },
+
+  ru: {
+    ui: {
+      hint: 'Нажмите на alexius.ai или выберите язык', ready: 'Голограмма готова', transfer: 'Передача…', me: 'Это я',
+      kicker: '// Это я', sub: 'Инженер · Человек дела · AI-Builder', soon: 'Выберите тему – путешествие начинается.',
+      again: '↺ Ещё раз', back: '← Назад', menu: 'Темы',
+    },
+    topics: { sprachen: 'Языки', projekte: 'Проекты', skills: 'Навыки', lebenslauf: 'Карьера', ausbildung: 'Образование' },
+    langs: [['Немецкий', 'родной'], ['Английский', 'свободно'], ['Русский', 'свободно']],
+    projects: [
+      { y: '2004–10', t: 'Международные логистические проекты', k: 'Volkswagen Original Teile', d: 'Координация международных логистических проектов в сфере оригинальных запчастей и послепродажного обслуживания – процессы, интерфейсы, коммуникация с поставщиками.' },
+      { y: '2014', t: 'Зимние Олимпийские игры в Сочи', k: 'Volkswagen Group Russia · Руководитель проекта', d: 'Объём проекта около 130 млн €, около 4 000 автомобилей, около 50 сотрудников – и около 15 млн € экономии. Предоставление автомобилей, логистика, бюджет и руководство спонсорским комитетом.' },
+      { y: '2017', t: 'EXPO 2017 в Астане', k: 'Teams Solutions GmbH · Основатель и генеральный директор', d: 'Концепция и реализация тематического павильона площадью около 2 000 м², 30 экспонентов, около 30 сотрудников – полная ответственность за сроки, бюджет и реализацию.' },
+      { y: '2018–21', t: 'Регионализация: Казахстан и Узбекистан', k: 'Volkswagen Group Russia · Руководитель по развитию бизнеса', d: 'Стратегия дилерской сети, продажи, маркетинг и послепродажное обслуживание по стандартам VW, около 50 сотрудников. Участие в запуске SKD-сборки автомобилей в Узбекистане.' },
+      { y: '2022–24', t: 'Международная торговля и экспорт автомобилей', k: 'Собственный бизнес', d: 'Торговля и экспорт автомобилей из Германии: планирование, таможенная и экспортная документация, международные перевозки и передача автомобилей партнёрам за рубежом.' },
+      { y: '2025', t: 'Автологистика с ИИ', k: 'Собственный бизнес · ChatGPT и Claude', d: 'Региональные и общенациональные перевозки автомобилей – с ИИ для анализа процессов, автоматизации и документации. Концепция собственного приложения для автологистики и планирования маршрутов.' },
+    ],
+    stats: [['~20', 'лет международного опыта'], ['4', 'страны'], ['130 млн €', 'крупнейший проект']],
+    skills: [
+      { h: 'Ключевые компетенции', c: ['Руководство и управление командой', 'Продажи и развитие бизнеса', 'Маркетинг и мероприятия', 'Дилерские и партнёрские сети', 'Логистика автомобилей и запчастей', 'Экспорт, импорт и таможня', 'Управление проектами и программами', 'Переговоры по контрактам'] },
+      { h: 'ИИ и цифровые инструменты', ai: true, c: ['ChatGPT', 'Claude / Claude Code', 'Автоматизация процессов', 'Прототипирование с ИИ', 'Цифровизация процессов'] },
+      { h: 'Сильные стороны', c: ['Стрессоустойчивость', 'Практический подход', 'Работа с международными партнёрами', 'Структурированная отчётность', 'Коммерческое мышление', 'Быстрое освоение нового'] },
+      { h: 'Программы', c: ['Excel', 'PowerPoint', 'Word', 'MS Project'] },
+    ],
+    stations: [
+      ['1979', 'Родился в Казахстане', 'Немецко-русские корни – основа всего, что было дальше.'],
+      ['2000–2004', 'Учёба · Университет Касселя', 'Дуальное обучение, диплом инженера-машиностроителя (Dipl.-Ing.).'],
+      ['2004–2010', 'Volkswagen Original Teile', 'Координатор международных логистических проектов: запчасти и послепродажное обслуживание.'],
+      ['2011–2015', 'Москва · Volkswagen Group Russia', 'Ассистент генерального директора, затем руководитель по развитию бизнеса.'],
+      ['2014', 'Сочи · Зимние Олимпийские игры', 'Руководитель проекта: около 4 000 автомобилей, объём около 130 млн €.'],
+      ['2016–2017', 'Астана · EXPO 2017', 'Основатель и генеральный директор Teams Solutions GmbH – тематический павильон около 2 000 м².'],
+      ['2018–2021', 'Алматы и Ташкент', 'Регионализация Volkswagen в Казахстане и Узбекистане, около 50 сотрудников.'],
+      ['2022 – сегодня', 'Баунаталь / Кассель', 'Собственный бизнес: торговля и экспорт автомобилей, сейчас автологистика – с ИИ каждый день.'],
+    ],
+    edu: { uni: 'Университет Касселя', title: 'Дипломированный инженер<br>Машиностроение', items: [['2000 – 2004', 'Дуальное обучение «Studium im Praxisverbund»'], ['2004', 'Диплом инженера (Dipl.-Ing.) по машиностроению'], ['2004 →', 'Начало работы в Volkswagen, международные логистические проекты']] },
+  },
+};
+// Map coordinates of the career stations (same for every language)
+window.STATION_POINTS = [[[48.0, 67.0]], [[51.31, 9.48]], [[51.25, 9.42]], [[55.75, 37.62]], [[43.6, 39.73]], [[51.17, 71.43]], [[43.24, 76.89], [41.3, 69.24]], [[51.25, 9.42]]];
