@@ -23,3 +23,28 @@ h1{font-weight:800;font-size:clamp(28px,6vw,52px);line-height:.95;letter-spacing
 .soon{margin-top:14px;font-size:13px;color:var(--dim)}
 .again{pointer-events:auto;margin-top:16px;background:rgba(3,6,10,.5);border:1px solid rgba(94,240,255,.35);color:var(--ink);border-radius:30px;padding:8px 14px;font-size:9.5px;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.hint,.pill i{animation:none}}
+
+/* ---- menu (right of the portrait) ---- */
+#menu{position:fixed;z-index:6;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateX(16px);pointer-events:none;transition:opacity .9s ease .3s,transform .9s ease .3s}
+#menu.on{opacity:1;transform:none;pointer-events:auto}
+#menu.hide{opacity:0!important;pointer-events:none!important;transition-delay:0s}
+.mbtn{display:flex;align-items:center;gap:9px;font-size:10px;color:var(--ink);background:rgba(5,22,32,.55);border:1px solid rgba(94,240,255,.35);border-radius:30px;padding:9px 14px 9px 10px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer;text-align:left;box-shadow:0 0 18px rgba(94,240,255,.12);transition:border-color .2s,background .2s}
+.mbtn b{font-weight:400;color:var(--cy);font-size:9px}
+.mbtn:hover,.mbtn:focus-visible{border-color:var(--cy);background:rgba(10,40,55,.7);outline:none}
+main.away{opacity:0!important;transition-delay:0s}
+
+/* ---- topic overlay: languages ---- */
+.topic{position:fixed;left:0;right:0;bottom:0;z-index:6;padding:90px 22px max(26px,env(safe-area-inset-bottom));text-align:center;pointer-events:none;opacity:0;transition:opacity .6s;
+  background:linear-gradient(to bottom,rgba(3,6,10,0),rgba(3,6,10,.7) 35%,rgba(3,6,10,.9))}
+.topic.on{opacity:1;pointer-events:auto}
+.langs{width:min(360px,86vw);height:auto;display:block;margin:6px auto 0;overflow:visible}
+.langs text{font-family:Caveat,"Segoe Script","Bradley Hand",cursive;font-size:64px;font-weight:600;text-anchor:middle;fill:rgba(234,252,255,0);stroke:#5ef0ff;stroke-width:1.2;stroke-dasharray:900;stroke-dashoffset:900;filter:drop-shadow(0 0 6px rgba(94,240,255,.55))}
+.topic.on .langs text{animation:write 1.7s ease forwards,fillin .8s ease forwards}
+.topic.on .langs text:nth-child(1){animation-delay:.5s,1.8s}
+.topic.on .langs text:nth-child(2){animation-delay:1.3s,2.6s}
+.topic.on .langs text:nth-child(3){animation-delay:2.1s,3.4s}
+@keyframes write{to{stroke-dashoffset:0}}
+@keyframes fillin{to{fill:rgba(234,252,255,.95)}}
+.back{margin-top:14px;background:rgba(3,6,10,.5);border:1px solid rgba(94,240,255,.35);color:var(--ink);border-radius:30px;padding:8px 14px;font-size:9.5px;cursor:pointer}
+.toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-8px);z-index:9;font-size:10px;padding:8px 14px;border-radius:20px;background:rgba(5,22,32,.85);border:1px solid rgba(94,240,255,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
