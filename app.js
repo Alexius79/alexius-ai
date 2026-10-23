@@ -556,7 +556,7 @@
 
   const onload = () => { if (++loaded === 2) { buildParticles(); ready = true; } };
   imgSide.onload = imgFront.onload = onload;
-  imgSide.src = 'side3.webp'; imgFront.src = 'front4.webp';
+  imgSide.src = 'side3.webp'; imgFront.src = 'front5.webp';
   let initial = 'de';
   try { initial = new URL(location.href).searchParams.get('lang') || localStorage.getItem('alexius-lang') || 'de'; } catch (e) {}
   layout(); setLang(initial, true); placeStartLang(); frame();
