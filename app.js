@@ -366,10 +366,29 @@
       rot = { lon: 20, lat: 25 }; gT0 = performance.now(); cancelAnimationFrame(globeRaf); globeLoop();
     } else { clearInterval(auto); setTimeout(() => { if (!globeActive) cancelAnimationFrame(globeRaf); }, 1100); }
   }
+  // shared geometry: year column on the left, globe in the middle, info card in its lower half
+  function gGeom() {
+    const mob = W < 600, colW = mob ? 74 : Math.min(190, W * .16), top = mob ? 92 : 100, bot = mob ? 78 : 90;
+    // on phones the globe may tuck slightly under the year column so it can be bigger
+    const availW = mob ? W - colW * .6 - 8 : W - colW * 2 - 16, availH = H - top - bot;
+    const r = Math.max(90, Math.min(availW / 2 / 1.12, availH / 2.62, 300));
+    const gcx = mob ? W - 6 - 1.12 * r : W / 2;
+    const gcy = top + (availH - 2.62 * r) / 2 + 1.14 * r;
+    return { r, gcx, gcy, colW, mob };
+  }
+  function placeGlobeUI() {
+    const g = gGeom(), sb = $('stops'), sc = $('station'), kk = document.querySelector('#topic-lebenslauf .kicker');
+    sb.style.left = (g.mob ? 14 : Math.max(22, g.gcx - g.r * 1.14 - g.colW)) + 'px';
+    sb.style.top = Math.max(84, g.gcy - sb.offsetHeight / 2) + 'px';
+    kk.style.left = sb.style.left; kk.style.top = (parseFloat(sb.style.top) - 26) + 'px';
+    const cw = Math.min(g.r * (g.mob ? 1.8 : 1.72), 380);
+    sc.style.width = cw + 'px'; sc.style.left = (g.gcx - cw / 2) + 'px'; sc.style.top = (g.gcy + g.r * .1) + 'px';
+  }
   function centreOf(st) { let la = 0, lo = 0; st.p.forEach(q => { la += q[0]; lo += q[1]; }); return { lat: la / st.p.length, lon: lo / st.p.length }; }
   function selectStation(i, user) {
     stIdx = i; const st = STATIONS[i], c0 = centreOf(st);
-    rotT = { lat: clamp(c0.lat * .6, -30, 40), lon: c0.lon };
+    rotT = { lat: clamp(c0.lat - 27, -15, 40), lon: c0.lon };
+    const sc = $('station'); sc.classList.remove('in'); void sc.offsetWidth; sc.classList.add('in');
     $('sy').textContent = st.y; $('sn').textContent = st.n; $('sd').textContent = st.d;
     document.querySelectorAll('#stops button').forEach((b, k) => b.setAttribute('aria-selected', k === i ? 'true' : 'false'));
     if (user) clearInterval(auto);
@@ -377,17 +396,17 @@
   function buildStops() {
     const box = $('stops'); box.innerHTML = '';
     STATIONS.forEach((st, i) => {
-      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = st.y.split(/[–\s]/)[0];
+      const b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = st.y.split(/[–\s]/)[0]; b.title = st.n;
       b.addEventListener('click', () => selectStation(i, true)); box.appendChild(b);
     });
-    selectStation(0); clearInterval(auto);
+    placeGlobeUI(); selectStation(0); clearInterval(auto);
     if (!reduce) auto = setInterval(() => { if (state === 'topic' && globeActive) selectStation((stIdx + 1) % STATIONS.length); }, 4200);
   }
   function globeLoop() {
     const tt = (performance.now() - gT0) / 1000;
     let dl = ((rotT.lon - rot.lon + 540) % 360) - 180;
     rot.lon += dl * .05; rot.lat += (rotT.lat - rot.lat) * .05;
-    const r = Math.min(W * .38, H * .25) * (.8 + .2 * ease(clamp(tt / 1))), gcx = W / 2, gcy = H * .32;
+    const G = gGeom(), r = G.r * (.8 + .2 * ease(clamp(tt / 1))), gcx = G.gcx, gcy = G.gcy;
     gx.clearRect(0, 0, W, H);
     // stand of the desk globe
     gx.strokeStyle = 'rgba(94,240,255,.35)'; gx.lineWidth = 1.2;

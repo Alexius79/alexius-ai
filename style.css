@@ -86,13 +86,22 @@ main.away{opacity:0!important;transition-delay:0s}
 /* globe / lebenslauf */
 #globe{position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none;opacity:0;transition:opacity 1s ease}
 #globe.on{opacity:1}
-.topic-globe{background:linear-gradient(to bottom,rgba(3,6,10,0),rgba(3,6,10,.6) 30%,rgba(3,6,10,.9))}
-.station{max-width:360px;margin:6px auto 0;min-height:88px}
+.topic.topic-globe{inset:0;max-height:none;overflow:visible;padding:0;background:none;pointer-events:none}
+.topic-globe.on>*{pointer-events:auto}
+.topic-globe .kicker{position:absolute;margin:0;text-align:left}
+.station{position:absolute;text-align:center;padding:12px 14px 14px;border-radius:16px;background:rgba(3,10,16,.62);border:1px solid rgba(94,240,255,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 0 30px rgba(94,240,255,.08)}
+.station.in{animation:stin .55s ease both}
+@keyframes stin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .station .sk{font-size:10px;color:var(--cy)}
-.station h3{font-size:19px;margin-top:5px}
-.station p{font-size:13px;line-height:1.45;color:#cfe6ee;margin-top:5px}
-.stops{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;max-width:520px;margin:12px auto 0}
-.stops button{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:9px;letter-spacing:.1em;color:var(--dim);background:rgba(6,24,34,.6);border:1px solid rgba(94,240,255,.2);border-radius:20px;padding:6px 9px;cursor:pointer}
+.station h3{font-size:17px;line-height:1.2;margin-top:4px}
+.station p{font-size:12.5px;line-height:1.45;color:#cfe6ee;margin-top:5px}
+.stops{position:absolute;display:flex;flex-direction:column;gap:7px;padding-left:14px}
+.stops::before{content:"";position:absolute;left:3px;top:10px;bottom:10px;width:1px;background:linear-gradient(var(--cy),rgba(94,240,255,.12))}
+.stops button{position:relative;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:10px;letter-spacing:.1em;color:var(--dim);background:rgba(6,24,34,.6);border:1px solid rgba(94,240,255,.2);border-radius:20px;padding:7px 9px;cursor:pointer;text-align:left;background:rgba(4,16,24,.88)}
+.stops button::before{content:"";position:absolute;left:-15px;top:50%;width:7px;height:7px;margin-top:-4px;border-radius:50%;background:#03060a;border:1.5px solid rgba(94,240,255,.6)}
+.stops button[aria-selected=true]::before{background:var(--cy);box-shadow:0 0 8px var(--cy)}
+.topic-globe .back{position:absolute;left:50%;transform:translateX(-50%);bottom:max(22px,env(safe-area-inset-bottom));margin:0}
+@media (prefers-reduced-motion:reduce){.station.in{animation:none}}
 .stops button[aria-selected=true]{color:#03060a;background:var(--cy);border-color:var(--cy)}
 
 /* ausbildung */

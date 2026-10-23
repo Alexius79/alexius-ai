@@ -25,6 +25,7 @@ window.I18N = {
     ],
     stations: [
       ['1979', 'Geboren in Kasachstan', 'Deutsch-russischsprachiger Hintergrund – die Basis für alles, was folgt.'],
+      ['1990', 'Umzug nach Deutschland', 'Von Kasachstan nach Deutschland – ein Neuanfang.'],
       ['2000–2004', 'Studium · Universität Kassel', 'Duales Studium „Studium im Praxisverbund“, Abschluss Dipl.-Ing. Maschinenbau.'],
       ['2004–2010', 'Volkswagen Original Teile', 'Koordinator internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft.'],
       ['2011–2015', 'Moskau · Volkswagen Group Russia', 'Assistent des Generaldirektors, danach Leiter Business Development.'],
@@ -61,6 +62,7 @@ window.I18N = {
     ],
     stations: [
       ['1979', 'Born in Kazakhstan', 'German-Russian background – the basis for everything that followed.'],
+      ['1990', 'Move to Germany', 'From Kazakhstan to Germany – a fresh start.'],
       ['2000–2004', 'Studies · University of Kassel', 'Dual study programme, degree Dipl.-Ing. in Mechanical Engineering.'],
       ['2004–2010', 'Volkswagen Original Parts', 'Coordinator of international logistics projects in original parts and aftersales.'],
       ['2011–2015', 'Moscow · Volkswagen Group Russia', 'Assistant to the General Director, then Head of Business Development.'],
@@ -97,6 +99,7 @@ window.I18N = {
     ],
     stations: [
       ['1979', 'Родился в Казахстане', 'Немецко-русские корни – основа всего, что было дальше.'],
+      ['1990', 'Переезд в Германию', 'Из Казахстана в Германию – новое начало.'],
       ['2000–2004', 'Учёба · Университет Касселя', 'Дуальное обучение, диплом инженера-машиностроителя (Dipl.-Ing.).'],
       ['2004–2010', 'Volkswagen Original Teile', 'Координатор международных логистических проектов: запчасти и послепродажное обслуживание.'],
       ['2011–2015', 'Москва · Volkswagen Group Russia', 'Ассистент генерального директора, затем руководитель по развитию бизнеса.'],
@@ -109,4 +112,4 @@ window.I18N = {
   },
 };
 // Map coordinates of the career stations (same for every language)
-window.STATION_POINTS = [[[48.0, 67.0]], [[51.31, 9.48]], [[51.25, 9.42]], [[55.75, 37.62]], [[43.6, 39.73]], [[51.17, 71.43]], [[43.24, 76.89], [41.3, 69.24]], [[51.25, 9.42]]];
+window.STATION_POINTS = [[[48.0, 67.0]], [[51.0, 10.2]], [[51.31, 9.48]], [[51.25, 9.42]], [[55.75, 37.62]], [[43.6, 39.73]], [[51.17, 71.43]], [[43.24, 76.89], [41.3, 69.24]], [[51.25, 9.42]]];
