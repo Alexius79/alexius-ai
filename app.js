@@ -28,6 +28,7 @@
   const mouse = { x: -1e4, y: -1e4 };
   const imgSide = new Image(), imgFront = new Image();
   let loaded = 0, ready = false, worldA = 1, worldAT = 1, watchA = 0, watchT0 = 0;
+  let MESH = null, meshA = 0, meshAT = 0, scanT0 = 0;
   // camera: focus point P (screen coords at zoom 1) is shown at anchor A with zoom z
   const cam = { z: 1, px: 0, py: 0, ax: 0, ay: 0 }, camT = { z: 1, px: 0, py: 0, ax: 0, ay: 0 };
 
@@ -88,6 +89,52 @@
       out.push({ x: place.x + (i + R()) / sc * place.s, y: place.y + (j + R()) / sc * place.s, l, a: a / 255 });
     }
     return out;
+  }
+
+  // wireframe net over the body (KI): grid nodes where the front photo is opaque, lifted by brightness
+  function buildMesh() {
+    const sc = .25, w = Math.round(imgFront.width * sc), h = Math.round(imgFront.height * sc);
+    const o = document.createElement('canvas'); o.width = w; o.height = h;
+    const q = o.getContext('2d', { willReadFrequently: true }); q.drawImage(imgFront, 0, 0, w, h);
+    const d = q.getImageData(0, 0, w, h).data, st = 22, cols = Math.ceil(FW / st) + 1, rows = Math.ceil(FH / st) + 1, g = [];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const px = Math.min(w - 1, (i * st * sc) | 0), py = Math.min(h - 1, (j * st * sc) | 0), k = (py * w + px) * 4;
+      g.push(d[k + 3] > 110 ? { x: i * st, y: j * st, l: d[k + 1] / 255 } : null);
+    }
+    MESH = { g, cols, rows };
+  }
+  function drawMesh() {
+    if (!MESH || meshA < .01) return;
+    const el = (performance.now() - scanT0) / 1000, first = 2.4;
+    // first pass sweeps head to toe; afterwards a calm scan repeats
+    const scanY = el < first ? 150 + (FH - 150) * ease(el / first) : 150 + (FH - 150) * (((el - first) / 5) % 1);
+    const strong = el < first ? 1 : .45, wob = reduce ? 0 : el;
+    const { g, cols, rows } = MESH, P = n => [fx(n.x + Math.sin(n.y * .013 + wob * 1.3) * 2.5), fy(n.y - n.l * 16 + Math.sin(n.x * .018 + wob) * 2)];
+    x.save(); x.globalCompositeOperation = 'lighter'; x.lineWidth = 1 / cam.z * (W < 600 ? .8 : 1);
+    for (const band of [0, 1]) {
+      x.strokeStyle = band ? `rgba(160,250,255,${.85 * meshA * strong})` : `rgba(94,240,255,${(el < first ? .32 : .22) * meshA})`;
+      x.beginPath();
+      for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+        const n = g[j * cols + i]; if (!n) continue;
+        const dy = scanY - n.y; if (el < first && dy < 0) continue;
+        const near = dy >= 0 && dy < 70; if (band !== (near ? 1 : 0)) continue;
+        const a = P(n), r = i < cols - 1 && g[j * cols + i + 1], b = j < rows - 1 && g[(j + 1) * cols + i];
+        if (r) { const c2 = P(r); x.moveTo(a[0], a[1]); x.lineTo(c2[0], c2[1]); }
+        if (b && (el >= first || b.y <= scanY)) { const c2 = P(b); x.moveTo(a[0], a[1]); x.lineTo(c2[0], c2[1]); }
+      }
+      x.stroke();
+    }
+    // glowing nodes right under the scan line
+    x.fillStyle = `rgba(220,255,255,${.9 * meshA * strong})`;
+    for (const n of g) { if (!n) continue; const dy = scanY - n.y; if (dy >= 0 && dy < 26) { const a = P(n); x.fillRect(a[0] - 1.2, a[1] - 1.2, 2.4, 2.4); } }
+    // the scan beam
+    const by = fy(scanY), bx0 = fx(60), bx1 = fx(FW - 60);
+    const gr = x.createLinearGradient(0, by - 90 * s, 0, by);
+    gr.addColorStop(0, 'rgba(94,240,255,0)'); gr.addColorStop(1, `rgba(94,240,255,${.16 * meshA * strong})`);
+    x.fillStyle = gr; x.fillRect(bx0, by - 90 * s, bx1 - bx0, 90 * s);
+    x.strokeStyle = `rgba(200,255,255,${.9 * meshA * strong})`; x.lineWidth = 1.6 / cam.z;
+    x.beginPath(); x.moveTo(bx0, by); x.lineTo(bx1, by); x.stroke();
+    x.restore();
   }
 
   function buildParticles() {
@@ -154,6 +201,7 @@
       const aMorph = state !== 'fly' ? 0 : clamp((T - .45) / .25) * (1 - clamp((T - 2.1) / .7));
       drawImg(imgSide, SIDE, aSide); drawEdges(EP.side, aSide);
       drawImg(imgFront, FRONT, aFront); drawEdges(EP.front, aFront);
+      meshA += (meshAT - meshA) * .08; drawMesh();
       if (aMorph > 0) {
         const sz = W < 600 ? 1.6 : 2;
         for (let b = 0; b < 6; b++) {
@@ -261,11 +309,19 @@
 
   function openTopic(name) {
     if (state !== 'done') return;
+    if (name === 'ki' && lang !== 'de') { toast(L().ui.kiSoon); return; }
     const el = $('topic-' + name);
     if (!el) return;
     state = 'topic'; clearTimers();
     $('main').classList.add('away'); $('menu').classList.add('hide');
-    if (name === 'sprachen') {
+    if (name === 'ki') {
+      $('st').textContent = L().topics.ki;
+      // a wireframe net scans the body head to toe, then the AI topics appear on a ring
+      if (!MESH) buildMesh();
+      Object.assign(camT, { z: W < 600 ? 1.05 : 1, px: W / 2, py: H / 2, ax: W / 2, ay: H / 2 });
+      meshAT = 1; scanT0 = performance.now();
+      later(() => { worldAT = .35; show(el); buildRing(); }, 2500);
+    } else if (name === 'sprachen') {
       $('st').textContent = L().topics.sprachen;
       // camera moves towards the face
       Object.assign(camT, { z: W < 600 ? 2.5 : 2.4, px: fx(FACE.x), py: fy(FACE.y), ax: W / 2, ay: H * .3 });
@@ -297,7 +353,7 @@
   }
   function show(el) { el.classList.add('on'); el.setAttribute('aria-hidden', 'false'); }
   function closeTopics() {
-    clearTimers(); eyeOn(false); globeOn(false); worldAT = 1; watchA = 0;
+    clearTimers(); eyeOn(false); globeOn(false); worldAT = 1; watchA = 0; meshAT = 0; ringOn = false;
     document.querySelectorAll('.topic').forEach(el => { el.classList.remove('on'); el.setAttribute('aria-hidden', 'true'); });
     $('pcard').hidden = true;
   }
@@ -484,6 +540,59 @@
     }));
     globeRaf = requestAnimationFrame(globeLoop);
   }
+
+  // ---- KI: ring carousel – the front card is biggest, the others turn away into the depth ----
+  const ring = $('ring');
+  let ringOn = false, rPos = 0, rTgt = 0, drag = null, AI = [];
+  const ICONS = {
+    web: '<rect x="3" y="5" width="26" height="20" rx="3"/><path d="M3 10h26M8 7.5h.01M11 7.5h.01M10 15l-3 3 3 3M22 15l3 3-3 3M17.5 14l-3 9"/>',
+    chat: '<path d="M4 6h17v12H10l-5 4v-4H4z"/><path d="M24 11h4v11h-2v3l-4-3h-7v-2"/>',
+    code: '<path d="M11 9l-7 7 7 7M21 9l7 7-7 7M18 6l-4 20"/>',
+    media: '<rect x="4" y="6" width="24" height="20" rx="3"/><circle cx="12" cy="13" r="2.5"/><path d="M4 23l7-6 5 4 4-3 8 6"/>',
+    route: '<circle cx="7" cy="24" r="3"/><circle cx="25" cy="8" r="3"/><path d="M10 24h9a4 4 0 0 0 0-8h-6a4 4 0 0 1 0-8h9"/>',
+    plus: '<circle cx="16" cy="16" r="11"/><path d="M16 10v12M10 16h12"/>',
+  };
+  function buildRing() {
+    AI = L().ai || []; const n = AI.length;
+    ring.innerHTML = AI.map((c, i) => `<article class="aic" data-i="${i}"><div class="aic-top mono"><span>${String(i + 1).padStart(2, '0')} / ${String(n).padStart(2, '0')}</span><svg viewBox="0 0 32 32" aria-hidden="true">${ICONS[c.ic] || ICONS.plus}</svg></div><h3>${c.t}</h3><p>${c.d}</p><div class="tags">${(c.tags || []).map(t => `<span class="mono">${t}</span>`).join('')}</div></article>`).join('');
+    $('rdots').innerHTML = AI.map((_, i) => `<i data-i="${i}"></i>`).join('');
+    rPos = rTgt = 0; ringOn = true; ringLoop();
+  }
+  const wrapD = (d, n) => ((d % n) + n * 1.5) % n - n / 2;
+  function goCard(i) { const n = AI.length; rTgt = rPos + wrapD(i - rPos, n); }
+  function ringLoop() {
+    if (!ringOn) return;
+    if (!drag) rPos += (rTgt - rPos) * (reduce ? 1 : .12);
+    const n = AI.length, Rr = Math.min(W * .42, 440), cards = ring.children, cur = ((Math.round(rTgt) % n) + n) % n;
+    for (let i = 0; i < cards.length; i++) {
+      const d = wrapD(i - rPos, n), an = d / n * Math.PI * 2, co = Math.cos(an);
+      const X = Math.sin(an) * Rr, Z = (co - 1) * Rr * 1.15, f = (co + 1) / 2;
+      const el = cards[i];
+      el.style.transform = `translate(-50%,-50%) translate3d(${X.toFixed(1)}px,0,${Z.toFixed(1)}px) rotateY(${(-an * 28).toFixed(1)}deg)`;
+      el.style.opacity = (.12 + .88 * Math.pow(f, 1.6)).toFixed(3);
+      el.style.zIndex = Math.round(f * 100);
+      el.classList.toggle('front', Math.abs(d) < .5);
+    }
+    $('rdots').querySelectorAll('i').forEach((el, i) => el.classList.toggle('on', i === cur));
+    requestAnimationFrame(ringLoop);
+  }
+  ring.addEventListener('pointerdown', e => { drag = { x0: e.clientX, p0: rPos, moved: false }; ring.setPointerCapture(e.pointerId); });
+  ring.addEventListener('pointermove', e => {
+    if (!drag) return; const dx = e.clientX - drag.x0; if (Math.abs(dx) > 6) drag.moved = true;
+    rPos = drag.p0 - dx / Math.min(W * .5, 320);
+  });
+  const endDrag = e => {
+    if (!drag) return; const moved = drag.moved; drag = null;
+    if (moved) { rTgt = Math.round(rPos); return; }
+    // a tap on a side card brings it to the front
+    const hit = document.elementFromPoint(e.clientX, e.clientY), card = hit && hit.closest('.aic');
+    if (card) goCard(+card.dataset.i);
+  };
+  ring.addEventListener('pointerup', endDrag); ring.addEventListener('pointercancel', endDrag);
+  $('rprev').addEventListener('click', () => { rTgt = Math.round(rTgt) - 1; });
+  $('rnext').addEventListener('click', () => { rTgt = Math.round(rTgt) + 1; });
+  $('rdots').addEventListener('click', e => { const i = e.target.dataset.i; if (i != null) goCard(+i); });
+  addEventListener('keydown', e => { if (!ringOn) return; if (e.key === 'ArrowLeft') rTgt = Math.round(rTgt) - 1; if (e.key === 'ArrowRight') rTgt = Math.round(rTgt) + 1; });
 
   // eye scene (separate canvas): iris, pupil, fibres
   const ec = $('eye'), ex = ec.getContext('2d');

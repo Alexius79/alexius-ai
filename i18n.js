@@ -4,9 +4,17 @@ window.I18N = {
     ui: {
       hint: 'Tippe auf alexius.ai oder wähle eine Sprache', ready: 'Hologramm bereit', transfer: 'Übertragung…', me: 'Das bin ich',
       kicker: '// Das bin ich', sub: 'Ingenieur · Macher · AI-Builder', soon: 'Wähle ein Thema – die Reise beginnt.',
-      again: '↺ Nochmal', back: '← Zurück', menu: 'Themen',
+      again: '↺ Nochmal', back: '← Zurück', menu: 'Themen', kiSoon: '',
     },
-    topics: { sprachen: 'Sprachen', projekte: 'Projekte', skills: 'Skills', lebenslauf: 'Lebenslauf', ausbildung: 'Ausbildung' },
+    topics: { sprachen: 'Sprachen', projekte: 'Projekte', skills: 'Skills', lebenslauf: 'Lebenslauf', ausbildung: 'Ausbildung', ki: 'KI' },
+    ai: [
+      { ic: 'web', t: 'Webseiten programmieren', d: 'Von schnellen Prototypen bis zur fertigen Webseite. Auch diese Seite – alexius.ai – ist mit Hilfe von Claude Code programmiert.', tags: ['Prototypen', 'Webseiten', 'Claude Code'] },
+      { ic: 'chat', t: 'Claude & ChatGPT clever nutzen', d: 'Intelligente Nutzung von Claude und ChatGPT: recherchieren, schreiben, strukturieren – und die Ergebnisse der einen KI mit der anderen gegenprüfen.', tags: ['Claude', 'ChatGPT'] },
+      { ic: 'code', t: 'Claude Coding', d: 'Programmierung von Apps, Webseiten, Dashboards und allem Nützlichen, das den Alltag leichter macht.', tags: ['Apps', 'Dashboards', 'Tools'] },
+      { ic: 'media', t: 'KI-Content', d: 'Bilder, Videos, Stimmen und Musik mit den aktuellen KI-Tools generieren.', tags: ['Kling', 'Nano Banana', 'Midjourney'] },
+      { ic: 'route', t: 'OnLogist-Tool', d: 'Eine nützliche Web-App zur schnellen Kalkulation logistischer Wege.', tags: ['Web-App', 'Logistik'] },
+      { ic: 'plus', t: 'Was als Nächstes kommt', d: 'Neue Ideen sind schon in Arbeit – jedes neue KI-Projekt bekommt hier seine eigene Karte.', tags: ['In Arbeit'] },
+    ],
     langs: [['Deutsch', 'Muttersprache'], ['Englisch', 'fließend'], ['Russisch', 'fließend']],
     projects: [
       { y: '2004–10', t: 'Internationale Logistikprojekte', k: 'Volkswagen Original Teile', d: 'Koordination internationaler Logistikprojekte im Originalteile- und Aftersales-Geschäft – Prozesse, Schnittstellen, Lieferantenkommunikation.' },
@@ -41,9 +49,9 @@ window.I18N = {
     ui: {
       hint: 'Tap alexius.ai or choose a language', ready: 'Hologram ready', transfer: 'Transmitting…', me: 'This is me',
       kicker: '// This is me', sub: 'Engineer · Doer · AI builder', soon: 'Pick a topic – the journey begins.',
-      again: '↺ Replay', back: '← Back', menu: 'Topics',
+      again: '↺ Replay', back: '← Back', menu: 'Topics', kiSoon: 'AI section coming soon in English',
     },
-    topics: { sprachen: 'Languages', projekte: 'Projects', skills: 'Skills', lebenslauf: 'Career', ausbildung: 'Education' },
+    topics: { sprachen: 'Languages', projekte: 'Projects', skills: 'Skills', lebenslauf: 'Career', ausbildung: 'Education', ki: 'AI' },
     langs: [['German', 'native'], ['English', 'fluent'], ['Russian', 'fluent']],
     projects: [
       { y: '2004–10', t: 'International logistics projects', k: 'Volkswagen Original Parts', d: 'Coordinated international logistics projects in the original parts and aftersales business – processes, interfaces, supplier communication.' },
@@ -78,9 +86,9 @@ window.I18N = {
     ui: {
       hint: 'Нажмите на alexius.ai или выберите язык', ready: 'Голограмма готова', transfer: 'Передача…', me: 'Это я',
       kicker: '// Это я', sub: 'Инженер · Человек дела · AI-Builder', soon: 'Выберите тему – путешествие начинается.',
-      again: '↺ Ещё раз', back: '← Назад', menu: 'Темы',
+      again: '↺ Ещё раз', back: '← Назад', menu: 'Темы', kiSoon: 'Раздел ИИ скоро появится на русском',
     },
-    topics: { sprachen: 'Языки', projekte: 'Проекты', skills: 'Навыки', lebenslauf: 'Карьера', ausbildung: 'Образование' },
+    topics: { sprachen: 'Языки', projekte: 'Проекты', skills: 'Навыки', lebenslauf: 'Карьера', ausbildung: 'Образование', ki: 'ИИ' },
     langs: [['Немецкий', 'родной'], ['Английский', 'свободно'], ['Русский', 'свободно']],
     projects: [
       { y: '2004–10', t: 'Международные логистические проекты', k: 'Volkswagen Original Teile', d: 'Координация международных логистических проектов в сфере оригинальных запчастей и послепродажного обслуживания – процессы, интерфейсы, коммуникация с поставщиками.' },

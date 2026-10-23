@@ -13,7 +13,7 @@
 <link rel="alternate" hreflang="ru" href="https://alexius.ai/?lang=ru">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2303060a'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='800' font-size='28' fill='%235ef0ff' text-anchor='middle'%3EAH%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="side3.webp" as="image"><link rel="preload" href="front5.webp" as="image">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <canvas id="c" aria-label="Alexander Hirsekorn – alexius.ai"></canvas>
@@ -38,6 +38,7 @@
   <button class="mbtn mono" data-topic="skills"><b>03</b><span data-t="skills">Skills</span></button>
   <button class="mbtn mono" data-topic="lebenslauf"><b>04</b><span data-t="lebenslauf">Lebenslauf</span></button>
   <button class="mbtn mono" data-topic="ausbildung"><b>05</b><span data-t="ausbildung">Ausbildung</span></button>
+  <button class="mbtn mono mbtn-ai" data-topic="ki"><b>06</b><span data-t="ki">KI</span></button>
 </nav>
 
 <main id="main">
@@ -87,8 +88,19 @@
   <button class="back mono" type="button" data-i18n="back">← Zurück</button>
 </section>
 
+<section id="topic-ki" class="topic topic-ki" aria-hidden="true">
+  <div class="kicker mono" data-k="ki"></div>
+  <div class="ring" id="ring" role="region" aria-roledescription="Karussell" tabindex="0"></div>
+  <div class="ringnav">
+    <button class="rbtn mono" id="rprev" type="button" aria-label="Zurück">‹</button>
+    <div class="rdots" id="rdots"></div>
+    <button class="rbtn mono" id="rnext" type="button" aria-label="Weiter">›</button>
+  </div>
+  <button class="back mono" type="button" data-i18n="back">← Zurück</button>
+</section>
+
 <div class="toast mono" id="toast"></div>
-<script src="i18n.js?v=9"></script>
-<script src="app.js?v=9"></script>
+<script src="i18n.js?v=10"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>
